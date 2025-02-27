@@ -1,1 +1,3 @@
-console.log('Hello, World!');
+import { readFile } from './helpers/fileReader';
+
+readFile();
