@@ -6,7 +6,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "start": "tsc && node ./dist/index.js"
+    "start": "tsc && cp -R ./src/data/ ./dist/data && node ./dist/index.js"
   },
   "keywords": [],
   "author": "",
