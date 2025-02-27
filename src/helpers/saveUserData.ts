@@ -3,25 +3,25 @@ import path from 'node:path';
 
 import { User } from '../interfaces/User';
 
-const FOLDER_PATH = path.resolve(__dirname, '..', '..', 'src', 'data', 'users');
+const folderPath = path.resolve(__dirname, '..', '..', 'src', 'data', 'users');
 
 export const saveUserData = async (user: User) => {
-  const INDEX = await getLastIndex();
+  const index = await getLastIndex();
 
-  const FILE_NAME =
-    INDEX + ' - ' + user.name.trim().toUpperCase().replace(/\s+/g, '') + '.txt';
+  const fileName =
+    index + ' - ' + user.name.trim().toUpperCase().replace(/\s+/g, '') + '.txt';
 
-  const FILE_PATH = path.join(FOLDER_PATH, FILE_NAME);
+  const filePath = path.join(folderPath, fileName);
 
-  const FILE_CONTENT = Object.values(user).join('\n');
+  const fileContent = Object.values(user).join('\n');
 
-  await fs.writeFile(FILE_PATH, FILE_CONTENT);
+  await fs.writeFile(filePath, fileContent);
 
   return;
 };
 
 const getLastIndex = async (): Promise<Number> => {
-  const filesCount = await fs.readdir(FOLDER_PATH);
+  const filesCount = await fs.readdir(folderPath);
 
   // TODO: add validation to exclude .gitkeep from file counting
   if (filesCount.length <= 0) return 1;

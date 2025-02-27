@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-const FILE_PATH = path.resolve(
+const filePath = path.resolve(
   __dirname,
   '..',
   '..',
@@ -11,7 +11,7 @@ const FILE_PATH = path.resolve(
 );
 
 export const getFileContent = async () => {
-  const fileContent = await fs.readFile(FILE_PATH, 'utf-8');
+  const fileContent = await fs.readFile(filePath, 'utf-8');
 
   const questions = fileContent.split('\n');
 
