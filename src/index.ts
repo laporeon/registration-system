@@ -1,3 +1,5 @@
-import { readFile } from './helpers/fileReader';
+import QuestionController from './controllers/questions.controller';
 
-readFile();
+const questions = new QuestionController();
+
+questions.start();
