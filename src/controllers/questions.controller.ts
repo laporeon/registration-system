@@ -1,12 +1,8 @@
+import { answerSchema } from '../helpers/answerSchema';
+import { COLORS } from '../helpers/colors';
 import { getFileContent } from '../helpers/fileReader';
 import { rl } from '../helpers/readLine';
 import { saveUserData } from '../helpers/saveUserData';
-
-enum COLORS {
-  reset = '\x1b[0m',
-  bright = '\x1b[1m',
-  green = '\x1b[32m',
-}
 
 class QuestionController {
   private answers: string[] = [];
@@ -20,8 +16,8 @@ class QuestionController {
       await saveUserData({
         name,
         email,
-        age: parseInt(age),
-        height: parseInt(height),
+        age,
+        height,
       });
 
       return;
@@ -31,6 +27,15 @@ class QuestionController {
     const coloredQuestion = `${COLORS.green}${COLORS.bright}${questions[index]}${COLORS.reset}`;
 
     rl.question(`${coloredQuestion} `, answer => {
+      const result = answerSchema[index].safeParse(answer);
+
+      if (result.error) {
+        console.log(
+          `${COLORS.red}ERRO: ${result.error.errors[0].message} Tente novamente.${COLORS.reset}`,
+        );
+        return this.askQuestions(questions, index);
+      }
+
       this.answers.push(answer);
       this.askQuestions(questions, index + 1);
     });
