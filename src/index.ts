@@ -4,7 +4,7 @@ import { UserController } from './controllers/users.controller';
 import { MainMenu } from './helpers/menu';
 
 const filesController = new FilesController();
-const userController = new UserController();
+const userController = new UserController(filesController);
 const questionController = new QuestionController(
   userController,
   filesController,
