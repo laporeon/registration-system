@@ -1,19 +1,24 @@
+import { FilesController } from '../controllers/files.controller';
 import { answerSchema } from '../helpers/answerSchema';
 import { COLORS } from '../helpers/colors';
-import { getFileContent } from '../helpers/fileReader';
 import { rl } from '../helpers/readLine';
-import { saveUserData } from '../helpers/saveUserData';
+import { UserController } from './users.controller';
 
-class QuestionController {
+export class QuestionController {
   private answers: string[] = [];
 
-  async askQuestions(questions: string[], index = 0) {
-    if (index >= questions.length) {
-      rl.close();
+  constructor(
+    private readonly userController: UserController,
+    private readonly filesController: FilesController,
+  ) {}
 
+  async askQuestions(index = 0) {
+    const questions = await this.filesController.getQuestions();
+
+    if (index >= questions.length) {
       const [name, email, age, height] = this.answers;
 
-      await saveUserData({
+      await this.userController.createUser({
         name,
         email,
         age,
@@ -26,26 +31,23 @@ class QuestionController {
     // Colorized the question to make it more readable
     const coloredQuestion = `${COLORS.green}${COLORS.bright}${questions[index]}${COLORS.reset}`;
 
-    rl.question(`${coloredQuestion} `, answer => {
-      const result = answerSchema[index].safeParse(answer);
+    return new Promise<void>(resolve => {
+      rl.question(`${coloredQuestion} `, async answer => {
+        const result = answerSchema[index].safeParse(answer);
 
-      if (result.error) {
-        console.log(
-          `${COLORS.red}ERRO: ${result.error.errors[0].message} Tente novamente.${COLORS.reset}`,
-        );
-        return this.askQuestions(questions, index);
-      }
+        if (!result.success) {
+          console.log(
+            `${COLORS.red}ERRO: ${result.error.errors[0].message} Tente novamente.${COLORS.reset}`,
+          );
+          await this.askQuestions(index);
+          resolve();
+          return;
+        }
 
-      this.answers.push(answer);
-      this.askQuestions(questions, index + 1);
+        this.answers.push(answer);
+        await this.askQuestions(index + 1);
+        resolve();
+      });
     });
   }
-
-  async start() {
-    const questions = await getFileContent();
-
-    this.askQuestions(questions);
-  }
 }
-
-export default QuestionController;
