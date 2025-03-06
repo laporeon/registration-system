@@ -12,10 +12,7 @@ export class MainMenu {
   private exit: boolean = false;
   public users: User[] = [];
 
-  constructor(
-    userController: UserController,
-    questionController: QuestionController,
-  ) {
+  constructor() {
     this.filesController = new FilesController();
     this.userController = new UserController(this.filesController);
     this.questionController = new QuestionController(
