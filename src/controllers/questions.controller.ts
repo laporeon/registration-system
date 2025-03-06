@@ -5,18 +5,16 @@ import { rl } from '../helpers/readLine';
 import { UserController } from './users.controller';
 
 export class QuestionController {
-  private answers: string[] = [];
-
   constructor(
     private readonly userController: UserController,
     private readonly filesController: FilesController,
   ) {}
 
-  async askQuestions(index = 0) {
+  async askQuestions(index = 0, answers: string[] = []) {
     const questions = await this.filesController.getQuestions();
 
     if (index >= questions.length) {
-      const [name, email, age, height] = this.answers;
+      const [name, email, age, height] = answers;
 
       await this.userController.createUser({
         name,
@@ -39,13 +37,14 @@ export class QuestionController {
           console.log(
             `${COLORS.red}ERRO: ${result.error.errors[0].message} Tente novamente.${COLORS.reset}`,
           );
-          await this.askQuestions(index);
+          await this.askQuestions(index, answers);
           resolve();
           return;
         }
 
-        this.answers.push(answer);
-        await this.askQuestions(index + 1);
+        answers.push(answer);
+
+        await this.askQuestions(index + 1, answers);
         resolve();
       });
     });
