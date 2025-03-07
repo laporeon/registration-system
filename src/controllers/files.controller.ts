@@ -36,7 +36,7 @@ export class FilesController {
     const fileName =
       index +
       ' - ' +
-      user.name.trim().toUpperCase().replace(/\s+/g, '') +
+      user.name.trim().toLowerCase().replace(/\s+/g, '_') +
       '.txt';
 
     const filePath = path.join(this.folderPath, fileName);
@@ -51,9 +51,16 @@ export class FilesController {
   async getLastIndex() {
     const filesCount = await fs.readdir(this.folderPath);
 
-    // TODO: add validation to exclude .gitkeep from file counting
-    if (filesCount.length <= 0) return 1;
+    const validFiles = filesCount.filter(file => file !== '.gitkeep');
 
-    return filesCount.length + 1;
+    if (validFiles.length === 0) return 1;
+
+    return validFiles.length + 1;
+  }
+
+  async getAllFileNames() {
+    const files = await fs.readdir(this.folderPath);
+
+    return files.filter(file => file !== '.gitkeep');
   }
 }
