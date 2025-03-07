@@ -25,10 +25,8 @@ export class UserController {
 
   normalizeUsername(fileName: string) {
     return fileName
-      .replace(
-        /(\d+ - )([^_\.]+)(?:_([^_\.]+))?(?:_([^\.]+))?\.txt/,
-        '$1$2 $3 $4',
-      )
+      .split('.txt')[0]
+      .replace(/_/g, ' ')
       .replace(/\b\w/g, c => c.toUpperCase());
   }
 }
