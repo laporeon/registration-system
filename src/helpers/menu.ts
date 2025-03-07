@@ -78,8 +78,8 @@ export class MainMenu {
             rl.close();
             return;
           default:
-            console.log('Opção inválida, tente novamente.\n');
-            this.askOption();
+            console.log('Opção inválida, tente novamente.');
+            this.showSecondaryMenu();
             break;
         }
       },
