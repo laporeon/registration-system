@@ -1,6 +1,6 @@
-import { FilesController } from '../controllers/files.controller';
-import { QuestionController } from '../controllers/questions.controller';
-import { UserController } from '../controllers/users.controller';
+import { FileController } from '../controllers/file.controller';
+import { QuestionController } from '../controllers/question.controller';
+import { UserController } from '../controllers/user.controller';
 import { rl } from '../helpers/readLine';
 import { User } from '../interfaces/User';
 import { COLORS } from './colors';
@@ -8,16 +8,16 @@ import { COLORS } from './colors';
 export class MainMenu {
   private readonly userController: UserController;
   private readonly questionController: QuestionController;
-  private readonly filesController: FilesController;
+  private readonly fileController: FileController;
   private exit: boolean = false;
   public users: User[] = [];
 
   constructor() {
-    this.filesController = new FilesController();
-    this.userController = new UserController(this.filesController);
+    this.fileController = new FileController();
+    this.userController = new UserController(this.fileController);
     this.questionController = new QuestionController(
       this.userController,
-      this.filesController,
+      this.fileController,
     );
   }
 
