@@ -1,17 +1,17 @@
-import { FilesController } from '../controllers/files.controller';
 import { answerSchema } from '../helpers/answerSchema';
 import { COLORS } from '../helpers/colors';
 import { rl } from '../helpers/readLine';
-import { UserController } from './users.controller';
+import { FileController } from './file.controller';
+import { UserController } from './user.controller';
 
 export class QuestionController {
   constructor(
     private readonly userController: UserController,
-    private readonly filesController: FilesController,
+    private readonly fileController: FileController,
   ) {}
 
   async askQuestions(index = 0, answers: string[] = []) {
-    const questions = await this.filesController.getQuestions();
+    const questions = await this.fileController.getQuestions();
 
     if (index >= questions.length) {
       const [name, email, age, height] = answers;

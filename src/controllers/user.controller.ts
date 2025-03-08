@@ -1,17 +1,17 @@
 import { User } from '../interfaces/User';
-import { FilesController } from './files.controller';
+import { FileController } from './file.controller';
 
 export class UserController {
-  constructor(private readonly filesController: FilesController) {}
+  constructor(private readonly fileController: FileController) {}
 
   async createUser(user: User) {
-    await this.filesController.saveUserData(user);
+    await this.fileController.saveUserData(user);
 
     console.log('\nUsuário cadastrado com sucesso!');
   }
 
   async listUsers() {
-    const files = await this.filesController.getAllFileNames();
+    const files = await this.fileController.getAllFileNames();
 
     if (files.length === 0) return console.log('\nNenhum usuário cadastrado.');
 

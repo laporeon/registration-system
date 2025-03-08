@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import { User } from '../interfaces/User';
 
-export class FilesController {
+export class FileController {
   private readonly filePath = path.resolve(
     __dirname,
     '..',
