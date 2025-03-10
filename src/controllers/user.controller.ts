@@ -1,32 +1,41 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+import { folderPath } from '../helpers/constants';
+import { createFileName, getAllFiles } from '../helpers/files';
 import { User } from '../interfaces/User';
-import { FileController } from './file.controller';
 
 export class UserController {
-  constructor(private readonly fileController: FileController) {}
-
   async createUser(user: User) {
-    await this.fileController.saveUserData(user);
+    const fileName = await createFileName(user.name);
+
+    const filePath = path.join(folderPath, fileName);
+
+    const fileContent = Object.values(user).join('\n');
+
+    await fs.writeFile(filePath, fileContent);
 
     console.log('\nUsuário cadastrado com sucesso!');
   }
 
   async listUsers() {
-    const files = await this.fileController.getAllFileNames();
+    const files = await getAllFiles();
 
     if (files.length === 0) return console.log('\nNenhum usuário cadastrado.');
 
     console.log('\nUsuários cadastrados: ');
 
-    files.forEach(file => {
-      const user = this.normalizeUsername(file);
-      console.log(user);
-    });
+    let index = 1;
+
+    for (const file of files) {
+      const fileContent = await fs.readFile(file, 'utf-8');
+      const user = fileContent.split('\n')[0];
+      console.log(`${index} - ${this.normalizeUsername(user)}`);
+      index++;
+    }
   }
 
-  normalizeUsername(fileName: string) {
-    return fileName
-      .split('.txt')[0]
-      .replace(/_/g, ' ')
-      .replace(/\b\w/g, c => c.toUpperCase());
+  normalizeUsername(user: string) {
+    return user.replace(/\b\w/g, c => c.toUpperCase());
   }
 }
