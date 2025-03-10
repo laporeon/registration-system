@@ -1,4 +1,3 @@
-import { FileController } from '../controllers/file.controller';
 import { QuestionController } from '../controllers/question.controller';
 import { UserController } from '../controllers/user.controller';
 import { rl } from '../helpers/readLine';
@@ -8,17 +7,12 @@ import { COLORS } from './colors';
 export class MainMenu {
   private readonly userController: UserController;
   private readonly questionController: QuestionController;
-  private readonly fileController: FileController;
   private exit: boolean = false;
   public users: User[] = [];
 
   constructor() {
-    this.fileController = new FileController();
-    this.userController = new UserController(this.fileController);
-    this.questionController = new QuestionController(
-      this.userController,
-      this.fileController,
-    );
+    this.userController = new UserController();
+    this.questionController = new QuestionController(this.userController);
   }
 
   display() {
@@ -31,6 +25,7 @@ export class MainMenu {
 
       1 - Cadastrar um usuário.
       2 - Listar usuários.
+      3 - Buscar usuário por nome.
       0 - Sair\n
     `);
 
@@ -51,7 +46,7 @@ export class MainMenu {
           this.showSecondaryMenu();
           break;
         case '0':
-          console.log('Até mais!');
+          console.log('\nAté mais!');
           this.exit = true;
           rl.close();
           return;
@@ -71,7 +66,6 @@ export class MainMenu {
           case '1':
             this.display();
             break;
-
           case '0':
             console.log('\nAté mais!');
             this.exit = true;
