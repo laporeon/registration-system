@@ -1,6 +1,6 @@
 import { QuestionController } from '../controllers/question.controller';
 import { UserController } from '../controllers/user.controller';
-import { rl } from '../helpers/readLine';
+import { rl } from '../helpers/constants';
 import { User } from '../interfaces/User';
 import { COLORS } from './colors';
 
@@ -45,6 +45,11 @@ export class MainMenu {
           await this.userController.listUsers();
           this.showSecondaryMenu();
           break;
+        case '3':
+          const name = await this.getNameToSearchInput();
+          await this.userController.getUserByName(name);
+          this.showSecondaryMenu();
+          break;
         case '0':
           console.log('\nAté mais!');
           this.exit = true;
@@ -78,5 +83,13 @@ export class MainMenu {
         }
       },
     );
+  }
+
+  async getNameToSearchInput(): Promise<string> {
+    return new Promise(resolve => {
+      rl.question('\nInforme o nome do usuário que deseja buscar: ', name => {
+        resolve(name);
+      });
+    });
   }
 }
