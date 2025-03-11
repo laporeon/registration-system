@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { folderPath } from '../helpers/constants';
+import { folderPath, normalizeName } from '../helpers/constants';
 import { createFileName, getAllFiles } from '../helpers/files';
 import { User } from '../interfaces/User';
 
@@ -19,23 +19,49 @@ export class UserController {
   }
 
   async listUsers() {
-    const files = await getAllFiles();
+    const users = await this.getUsers();
 
-    if (files.length === 0) return console.log('\nNenhum usuário cadastrado.');
-
-    console.log('\nUsuários cadastrados: ');
+    if (users.length === 0) return console.log('\nNenhum usuário cadastrado.');
 
     let index = 1;
 
-    for (const file of files) {
-      const fileContent = await fs.readFile(file, 'utf-8');
-      const user = fileContent.split('\n')[0];
-      console.log(`${index} - ${this.normalizeUsername(user)}`);
+    console.log('\nUsuários cadastrados: ');
+
+    for (const user of users) {
+      console.log(`${index} - ${user}`);
       index++;
     }
   }
 
-  normalizeUsername(user: string) {
-    return user.replace(/\b\w/g, c => c.toUpperCase());
+  async getUsers() {
+    const files = await getAllFiles();
+
+    const users = await Promise.all(
+      files.map(async file => {
+        const fileContent = await fs.readFile(file, 'utf-8');
+        const user = fileContent.split('\n')[0];
+        return user;
+      }),
+    );
+
+    return users;
+  }
+
+  async getUserByName(name: string) {
+    const users = await this.getUsers();
+
+    const normalizedName = normalizeName(name);
+
+    const matchedUsers = users.filter(user => user.startsWith(normalizedName));
+
+    if (matchedUsers.length === 0)
+      return console.log(
+        `\nNenhum usuário cadastrado com o nome "${normalizedName}".`,
+      );
+
+    console.log(`\nUsuários encontrados com o nome "${normalizedName}":`);
+    return matchedUsers.forEach(user => {
+      console.log(user);
+    });
   }
 }
