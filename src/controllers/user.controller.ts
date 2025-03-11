@@ -6,12 +6,12 @@ import { createFileName, getAllFiles } from '../helpers/files';
 import { User } from '../interfaces/User';
 
 export class UserController {
-  async createUser(user: User) {
-    const fileName = await createFileName(user.name);
+  async createUser({ name, email, age, height, data = [] }: User) {
+    const fileName = await createFileName(name);
 
     const filePath = path.join(folderPath, fileName);
 
-    const fileContent = Object.values(user).join('\n');
+    const fileContent = [name, email, age, height, ...data].join('\n');
 
     await fs.writeFile(filePath, fileContent);
 
