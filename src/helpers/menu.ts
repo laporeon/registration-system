@@ -26,6 +26,7 @@ export class MainMenu {
       1 - Cadastrar um usuário.
       2 - Listar usuários.
       3 - Buscar usuário por nome.
+      4 - Cadastrar uma nova pergunta.
       0 - Sair\n
     `);
 
@@ -46,8 +47,13 @@ export class MainMenu {
           this.showSecondaryMenu();
           break;
         case '3':
-          const name = await this.getNameToSearchInput();
+          const name = await this.promptNewQuestion(option);
           await this.userController.getUserByName(name);
+          this.showSecondaryMenu();
+          break;
+        case '4':
+          const question = await this.promptNewQuestion(option);
+          await this.questionController.createQuestion(question);
           this.showSecondaryMenu();
           break;
         case '0':
@@ -85,10 +91,20 @@ export class MainMenu {
     );
   }
 
-  async getNameToSearchInput(): Promise<string> {
+  async promptNewQuestion(option: string): Promise<string> {
+    let message = '';
+    switch (option) {
+      case '3':
+        message = '\nInforme o nome do usuário que deseja buscar: ';
+        break;
+      case '4':
+        message = '\nDigite a pergunta que deseja adicionar: ';
+        break;
+    }
+
     return new Promise(resolve => {
-      rl.question('\nInforme o nome do usuário que deseja buscar: ', name => {
-        resolve(name);
+      rl.question(message, value => {
+        resolve(value);
       });
     });
   }
