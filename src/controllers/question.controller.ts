@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 
 import { answerSchema } from '../helpers/answerSchema';
 import { COLORS } from '../helpers/colors';
-import { filePath, rl } from '../helpers/constants';
+import { filePath, rl, normalizeName } from '../helpers/constants';
 import { UserController } from './user.controller';
 
 export class QuestionController {
@@ -22,7 +22,12 @@ export class QuestionController {
     if (index >= questions.length) {
       const [name, email, age, height] = answers;
 
-      await this.userController.createUser({ name, email, age, height });
+      await this.userController.createUser({
+        name: normalizeName(name),
+        email,
+        age,
+        height,
+      });
 
       return;
     }
