@@ -2,8 +2,7 @@ import fs from 'node:fs/promises';
 
 import { answerSchema } from '../helpers/answerSchema';
 import { COLORS } from '../helpers/colors';
-import { filePath } from '../helpers/constants';
-import { rl } from '../helpers/readLine';
+import { filePath, rl } from '../helpers/constants';
 import { UserController } from './user.controller';
 
 export class QuestionController {
@@ -39,7 +38,7 @@ export class QuestionController {
           console.log(
             `${COLORS.red}ERRO: ${result.error.errors[0].message} Tente novamente.${COLORS.reset}`,
           );
-          resolve(this.askQuestions(index, answers));
+          return resolve(this.askQuestions(index, answers));
         }
 
         answers.push(answer);
