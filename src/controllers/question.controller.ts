@@ -1,12 +1,19 @@
 import fs from 'node:fs/promises';
 
-import { answerSchema } from '../helpers/answerSchema';
+import { answerSchema, dynamicAnswerSchema } from '../helpers/answerSchema';
 import { COLORS } from '../helpers/colors';
 import { filePath, rl, normalizeName } from '../helpers/constants';
+import { saveQuestionToFile } from '../helpers/files';
 import { UserController } from './user.controller';
 
 export class QuestionController {
   constructor(private readonly userController: UserController) {}
+
+  async createQuestion(question: string) {
+    await saveQuestionToFile(question);
+
+    console.log('\nQuestão cadastrada com sucesso!');
+  }
 
   async getQuestions() {
     const fileContent = await fs.readFile(filePath, 'utf-8');
@@ -19,25 +26,27 @@ export class QuestionController {
   async askQuestions(index = 0, answers: string[] = []): Promise<void> {
     const questions = await this.getQuestions();
 
-    if (index >= questions.length) {
-      const [name, email, age, height] = answers;
+    if (index === questions.length) {
+      const [name, email, age, height, ...data] = answers;
 
       await this.userController.createUser({
         name: normalizeName(name),
         email,
         age,
         height,
+        data,
       });
 
       return;
     }
 
     // Colorized the question to make it more readable
-    const coloredQuestion = `${COLORS.green}${COLORS.bright}${questions[index]}${COLORS.reset}`;
+    const coloredQuestion = `${COLORS.green}${COLORS.bright}${index + 1}) ${questions[index]}${COLORS.reset}`;
 
     return new Promise(resolve => {
       rl.question(`${coloredQuestion} `, async answer => {
-        const result = answerSchema[index].safeParse(answer);
+        const schema = answerSchema[index] || dynamicAnswerSchema;
+        const result = schema.safeParse(answer);
 
         if (!result.success) {
           console.log(
