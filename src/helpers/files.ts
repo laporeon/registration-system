@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { folderPath } from './constants';
+import { folderPath, normalizeName } from './constants';
 
 const getAllFiles = async () => {
   const files = await fs.readdir(folderPath);
@@ -24,11 +24,9 @@ const getLastFileIndex = async () => {
 const createFileName = async (name: string) => {
   const index = await getLastFileIndex();
 
-  return `${index} - ${name
-    .trim()
-    .toLowerCase()
-    .replace(/\b\w/g, c => c.toUpperCase())
-    .replace(/\s+/g, '_')}.txt`;
+  const normalizedName = normalizeName(name);
+
+  return `${index} - ${normalizedName.replace(/\s+/g, '_')}.txt`;
 };
 
 export { getAllFiles, getLastFileIndex, createFileName };
