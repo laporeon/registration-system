@@ -10,4 +10,11 @@ const filePath = path.resolve(__dirname, '../../src/data/formulario.txt');
 
 const folderPath = path.resolve(__dirname, '../../src/data/users');
 
-export { filePath, folderPath, rl };
+const normalizeName = (name: string) => {
+  return name
+    .trim()
+    .toLowerCase()
+    .replace(/\b\w/g, c => c.toUpperCase());
+};
+
+export { filePath, folderPath, rl, normalizeName };
