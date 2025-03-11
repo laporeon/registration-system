@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { folderPath, normalizeName } from './constants';
+import { filePath, folderPath, normalizeName } from './constants';
 
 const getAllFiles = async () => {
   const files = await fs.readdir(folderPath);
@@ -29,4 +29,10 @@ const createFileName = async (name: string) => {
   return `${index} - ${normalizedName.replace(/\s+/g, '_')}.txt`;
 };
 
-export { getAllFiles, getLastFileIndex, createFileName };
+const saveQuestionToFile = async (question: string) => {
+  await fs.appendFile(filePath, `\n${question}`, {
+    flag: 'a',
+  });
+};
+
+export { getAllFiles, getLastFileIndex, createFileName, saveQuestionToFile };
