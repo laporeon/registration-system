@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import { answerSchema, dynamicAnswerSchema } from '../helpers/answerSchema';
 import { COLORS } from '../helpers/colors';
 import { filePath, rl, normalizeName } from '../helpers/constants';
-import { saveQuestionToFile } from '../helpers/files';
+import { saveQuestionToFile, overwriteFileContent } from '../helpers/files';
 import { UserController } from './user.controller';
 
 export class QuestionController {
@@ -26,6 +26,11 @@ export class QuestionController {
   async askQuestions(index = 0, answers: string[] = []): Promise<void> {
     const questions = await this.getQuestions();
 
+    const coloredQuestions = questions.map(
+      (question, index) =>
+        `${COLORS.green}${COLORS.bright}${index + 1}) ${question} ${COLORS.reset}`,
+    );
+
     if (index === questions.length) {
       const [name, email, age, height, ...data] = answers;
 
@@ -40,11 +45,8 @@ export class QuestionController {
       return;
     }
 
-    // Colorized the question to make it more readable
-    const coloredQuestion = `${COLORS.green}${COLORS.bright}${index + 1}) ${questions[index]}${COLORS.reset}`;
-
     return new Promise(resolve => {
-      rl.question(`${coloredQuestion} `, async answer => {
+      rl.question(coloredQuestions[index], async answer => {
         const schema = answerSchema[index] || dynamicAnswerSchema;
         const result = schema.safeParse(answer);
 
@@ -59,5 +61,22 @@ export class QuestionController {
         resolve(this.askQuestions(index + 1, answers));
       });
     });
+  }
+
+  async deleteQuestion(index: string) {
+    const parsedIndex = parseInt(index, 10);
+    const questions = await this.getQuestions();
+
+    if (parsedIndex >= 1 && parsedIndex <= 4)
+      return console.log(`Você não pode deletar as perguntas 01 a 04.`);
+
+    if (parsedIndex > questions.length)
+      return console.log(`Não existe pergunta com esse ID.`);
+
+    const updatedQuestions = questions.filter(
+      (question, id) => id !== parsedIndex - 1,
+    );
+
+    await overwriteFileContent(updatedQuestions);
   }
 }
