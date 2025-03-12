@@ -1,9 +1,12 @@
 import fs from 'node:fs/promises';
 
-import { answerSchema, dynamicAnswerSchema } from '../helpers/answerSchema';
 import { COLORS } from '../helpers/colors';
 import { filePath, rl, normalizeName } from '../helpers/constants';
 import { saveQuestionToFile, overwriteFileContent } from '../helpers/files';
+import {
+  fixedQuestionsSchema,
+  dynamicQuestionsSchema,
+} from '../helpers/schemas';
 import { UserController } from './user.controller';
 
 export class QuestionController {
@@ -47,7 +50,7 @@ export class QuestionController {
 
     return new Promise(resolve => {
       rl.question(coloredQuestions[index], async answer => {
-        const schema = answerSchema[index] || dynamicAnswerSchema;
+        const schema = fixedQuestionsSchema[index] || dynamicQuestionsSchema;
         const result = schema.safeParse(answer);
 
         if (!result.success) {
