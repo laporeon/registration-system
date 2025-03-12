@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const answerSchema = [
+const fixedQuestionsSchema = [
   z.string().min(3, {
     message: 'Nome não pode estar vazio e deve conter no mínimo 3 caracteres.',
   }),
@@ -21,11 +21,11 @@ const answerSchema = [
     }),
 ];
 
-const dynamicAnswerSchema = z
+const dynamicQuestionsSchema = z
   .string()
   .min(1, {
     message: 'Resposta não pode estar vazia.',
   })
   .optional();
 
-export { answerSchema, dynamicAnswerSchema };
+export { fixedQuestionsSchema, dynamicQuestionsSchema };
