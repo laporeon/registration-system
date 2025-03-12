@@ -1,111 +1,88 @@
 import { QuestionController } from '../controllers/question.controller';
 import { UserController } from '../controllers/user.controller';
 import { rl } from '../helpers/constants';
-import { User } from '../interfaces/User';
 import { COLORS } from './colors';
 
 export class MainMenu {
-  private readonly userController: UserController;
-  private readonly questionController: QuestionController;
   private exit: boolean = false;
-  public users: User[] = [];
 
-  constructor() {
-    this.userController = new UserController();
-    this.questionController = new QuestionController(this.userController);
+  constructor(
+    private readonly userController: UserController = new UserController(),
+    private readonly questionController: QuestionController = new QuestionController(
+      userController,
+    ),
+  ) {}
+
+  async display() {
+    while (!this.exit) {
+      console.log(`
+        ***************************
+        === SISTEMA DE CADASTRO ===
+        ***************************
+
+        1 - Cadastrar um usuário.
+        2 - Listar usuários.
+        3 - Buscar usuário por nome.
+        4 - Cadastrar uma nova pergunta.
+        5 - Deletar uma pergunta.
+        0 - Sair\n
+      `);
+
+      await this.askOption();
+    }
   }
 
-  display() {
-    if (this.exit) return;
-
-    console.log(`
-      ***************************
-      === SISTEMA DE CADASTRO ===
-      ***************************
-
-      1 - Cadastrar um usuário.
-      2 - Listar usuários.
-      3 - Buscar usuário por nome.
-      4 - Cadastrar uma nova pergunta.
-      0 - Sair\n
-    `);
-
-    this.askOption();
-  }
-
-  askOption() {
-    const coloredQuestion = `${COLORS.green}${COLORS.bright}Digite uma opção: ${COLORS.reset}`;
-
-    rl.question(`${coloredQuestion}`, async option => {
-      switch (option.trim()) {
-        case '1':
-          await this.questionController.askQuestions();
-          this.showSecondaryMenu();
-          break;
-        case '2':
-          await this.userController.listUsers();
-          this.showSecondaryMenu();
-          break;
-        case '3':
-          const name = await this.promptNewQuestion(option);
-          await this.userController.getUserByName(name);
-          this.showSecondaryMenu();
-          break;
-        case '4':
-          const question = await this.promptNewQuestion(option);
-          await this.questionController.createQuestion(question);
-          this.showSecondaryMenu();
-          break;
-        case '0':
-          console.log('\nAté mais!');
-          this.exit = true;
-          rl.close();
-          return;
-        default:
-          console.log('Opção inválida, tente novamente.\n');
-          this.askOption();
-          break;
-      }
-    });
-  }
-
-  showSecondaryMenu() {
-    rl.question(
-      `\nDigite 1 para voltar ao menu inicial ou 0 para encerrar: `,
-      option => {
-        switch (option.trim()) {
-          case '1':
-            this.display();
-            break;
-          case '0':
-            console.log('\nAté mais!');
-            this.exit = true;
-            rl.close();
-            return;
-          default:
-            console.log('Opção inválida, tente novamente.');
-            this.showSecondaryMenu();
-            break;
-        }
-      },
+  async askOption() {
+    const option = await this.renderReadline(
+      `${COLORS.green}${COLORS.bright}Digite uma opção: ${COLORS.reset}`,
     );
-  }
 
-  async promptNewQuestion(option: string): Promise<string> {
-    let message = '';
-    switch (option) {
+    switch (option.trim()) {
+      case '1':
+        await this.questionController.askQuestions();
+        break;
+      case '2':
+        await this.userController.listUsers();
+        break;
       case '3':
-        message = '\nInforme o nome do usuário que deseja buscar: ';
+        const name = await this.renderReadline(
+          'Digite o nome do usuário que deseja buscar: ',
+        );
+        await this.userController.getUserByName(name);
         break;
       case '4':
-        message = '\nDigite a pergunta que deseja adicionar: ';
+        const question = await this.renderReadline(
+          'Digite a pergunta que deseja adicionar: ',
+        );
+        await this.questionController.createQuestion(question);
+        break;
+      case '5':
+        const questionId = await this.renderReadline(
+          'Digite o ID da pergunta que deseja remover: ',
+        );
+        await this.questionController.deleteQuestion(questionId);
+        break;
+      case '0':
+        this.exit = true;
+        rl.close();
+        console.log('\nAté mais!');
+        return;
+      default:
+        console.log('Opção inválida. Tente novamente.\n');
         break;
     }
 
-    return new Promise(resolve => {
-      rl.question(message, value => {
-        resolve(value);
-      });
-    });
+    const continueOption = await this.renderReadline(
+      '\nDigite 1 para voltar ao menu inicial ou 0 para encerrar: ',
+    );
+    if (continueOption.trim() === '0') {
+      this.exit = true;
+      rl.close();
+      console.log('\nAté mais!');
+    }
+  }
+
+  async renderReadline(message: string): Promise<string> {
+    return new Promise(resolve => rl.question(message, resolve));
   }
 }
