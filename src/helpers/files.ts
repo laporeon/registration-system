@@ -35,4 +35,14 @@ const saveQuestionToFile = async (question: string) => {
   });
 };
 
-export { getAllFiles, getLastFileIndex, createFileName, saveQuestionToFile };
+const overwriteFileContent = async (data: string[]) => {
+  await fs.writeFile(filePath, data.join('\n'));
+};
+
+export {
+  getAllFiles,
+  getLastFileIndex,
+  createFileName,
+  saveQuestionToFile,
+  overwriteFileContent,
+};
