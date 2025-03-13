@@ -10,6 +10,8 @@ import {
 import { UserController } from './user.controller';
 
 export class QuestionController {
+  private answers: string[] = [];
+
   constructor(private readonly userController: UserController) {}
 
   async createQuestion(question: string) {
@@ -26,43 +28,37 @@ export class QuestionController {
     return questions;
   }
 
-  async askQuestions(index = 0, answers: string[] = []): Promise<void> {
+  async askQuestions(index = 0): Promise<void> {
     const questions = await this.getQuestions();
 
-    const coloredQuestions = questions.map(
-      (question, index) =>
-        `${COLORS.green}${COLORS.bright}${index + 1}) ${question} ${COLORS.reset}`,
-    );
+    while (index < questions.length) {
+      const coloredQuestion = `${COLORS.green}${COLORS.bright}${index + 1}) ${questions[index]} ${COLORS.reset}`;
 
-    if (index === questions.length) {
-      const [name, email, age, height, ...data] = answers;
+      const answer = await new Promise<string>(resolve =>
+        rl.question(coloredQuestion, resolve),
+      );
 
-      await this.userController.createUser({
-        name: normalizeName(name),
-        email,
-        age,
-        height,
-        data,
-      });
+      const schema = fixedQuestionsSchema[index] || dynamicQuestionsSchema;
+      const result = schema.safeParse(answer);
 
-      return;
+      if (!result.success) {
+        console.log(
+          `${COLORS.red}ERRO: ${result.error.errors[0].message} Tente novamente.${COLORS.reset}`,
+        );
+        continue;
+      }
+
+      this.answers.push(answer);
+      index++;
     }
 
-    return new Promise(resolve => {
-      rl.question(coloredQuestions[index], async answer => {
-        const schema = fixedQuestionsSchema[index] || dynamicQuestionsSchema;
-        const result = schema.safeParse(answer);
-
-        if (!result.success) {
-          console.log(
-            `${COLORS.red}ERRO: ${result.error.errors[0].message} Tente novamente.${COLORS.reset}`,
-          );
-          return resolve(this.askQuestions(index, answers));
-        }
-
-        answers.push(answer);
-        resolve(this.askQuestions(index + 1, answers));
-      });
+    const [name, email, age, height, ...data] = this.answers;
+    await this.userController.createUser({
+      name: normalizeName(name),
+      email,
+      age,
+      height,
+      data,
     });
   }
 
