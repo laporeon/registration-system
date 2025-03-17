@@ -14,7 +14,12 @@
     "strict": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "paths": {
+      "@controllers/*": ["./src/controllers/*"],
+      "@helpers/*": ["./src/helpers/*"],
+      "@interfaces/*": ["./src/interfaces/*"]
+    }
   },
   "include": ["./src/**/*"],
   "exclude": ["node_modules/**/*", "dist"]
