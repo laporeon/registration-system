@@ -1,6 +1,7 @@
-import { QuestionController } from '../controllers/question.controller';
-import { UserController } from '../controllers/user.controller';
-import { rl } from '../helpers/constants';
+import { QuestionController } from '@controllers/question.controller';
+import { UserController } from '@controllers/user.controller';
+import { rl } from '@helpers/constants';
+
 import { COLORS } from './colors';
 
 export class MainMenu {

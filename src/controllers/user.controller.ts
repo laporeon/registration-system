@@ -1,9 +1,9 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { folderPath, normalizeName } from '../helpers/constants';
-import { createFileName, getAllFiles } from '../helpers/files';
-import { User } from '../interfaces/User';
+import { folderPath, normalizeName } from '@helpers/constants';
+import { createFileName, getAllFiles } from '@helpers/files';
+import { User } from '@interfaces/User';
 
 export class UserController {
   async createUser({ name, email, age, height, data = [] }: User) {

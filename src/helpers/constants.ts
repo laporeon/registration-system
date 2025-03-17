@@ -6,9 +6,10 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-const filePath = path.resolve(__dirname, '../../src/data/formulario.txt');
+const filePath = path.resolve(__dirname, '../../data/formulario.txt');
 
-const folderPath = path.resolve(__dirname, '../../src/data/users');
+const folderPath = path.resolve(__dirname, '../../data/users');
+console.log({ folderPath, filePath });
 
 const normalizeName = (name: string) => {
   return name

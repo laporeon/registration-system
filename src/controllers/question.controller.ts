@@ -1,17 +1,13 @@
 import fs from 'node:fs/promises';
 
-import { COLORS } from '../helpers/colors';
-import { filePath, rl, normalizeName } from '../helpers/constants';
-import { saveQuestionToFile, overwriteFileContent } from '../helpers/files';
-import {
-  fixedQuestionsSchema,
-  dynamicQuestionsSchema,
-} from '../helpers/schemas';
+import { COLORS } from '@helpers/colors';
+import { filePath, rl, normalizeName } from '@helpers/constants';
+import { saveQuestionToFile, overwriteFileContent } from '@helpers/files';
+import { fixedQuestionsSchema, dynamicQuestionsSchema } from '@helpers/schemas';
+
 import { UserController } from './user.controller';
 
 export class QuestionController {
-  private answers: string[] = [];
-
   constructor(private readonly userController: UserController) {}
 
   async createQuestion(question: string) {
@@ -30,6 +26,7 @@ export class QuestionController {
 
   async askQuestions(index = 0): Promise<void> {
     const questions = await this.getQuestions();
+    const answers: string[] = [];
 
     while (index < questions.length) {
       const coloredQuestion = `${COLORS.green}${COLORS.bright}${index + 1}) ${questions[index]} ${COLORS.reset}`;
@@ -48,11 +45,11 @@ export class QuestionController {
         continue;
       }
 
-      this.answers.push(answer);
+      answers.push(answer);
       index++;
     }
 
-    const [name, email, age, height, ...data] = this.answers;
+    const [name, email, age, height, ...data] = answers;
     await this.userController.createUser({
       name: normalizeName(name),
       email,

@@ -1,4 +1,4 @@
-import { MainMenu } from './helpers/menu';
+import { MainMenu } from '@helpers/menu';
 
 const menu = new MainMenu();
 
