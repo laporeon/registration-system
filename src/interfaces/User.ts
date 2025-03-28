@@ -1,7 +1,12 @@
+import { Address } from './Address';
+
 export interface User {
+  id: string;
   name: string;
   email: string;
-  age: string;
-  height: string;
-  data?: string[]; // Since users can add new questions, we need this optional attribute to handle them
+  dob: Date;
+  address: Address;
+  description: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
