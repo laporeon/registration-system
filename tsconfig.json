@@ -19,7 +19,12 @@
       "@controllers/*": ["./src/controllers/*"],
       "@helpers/*": ["./src/helpers/*"],
       "@interfaces/*": ["./src/interfaces/*"],
-      "@config/*": ["./src/config/*"]
+      "@config/*": ["./src/config/*"],
+      "@database/*": ["./src/database/*"],
+      "@services/*": ["./src/services/*"],
+      "@repositories/*": ["./src/repositories/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@middlewares/*": ["./src/middlewares/*"]
     }
   },
   "include": ["./src/**/*"],
