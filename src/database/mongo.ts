@@ -2,24 +2,26 @@ import { Db, MongoClient, ServerApiVersion } from 'mongodb';
 
 import { env } from '@config/env';
 
+let database: Db | null = null;
+
 const client: MongoClient = new MongoClient(env.databaseUrl, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
   },
+  maxPoolSize: 20,
+  minPoolSize: 5,
+  connectTimeoutMS: 10000,
 });
 
-export async function connectToMongoDB() {
+export async function connect(): Promise<Db> {
+  if (database) return database;
+
   try {
     await client.connect();
-
-    const database: Db = client.db('wiredcraft');
-
-    await database.command({ ping: 1 });
-
+    database = client.db('wiredcraft');
     console.log('Successfully connected to MongoDB!');
-
     return database;
   } catch (error) {
     console.error('Failed to connect with database:', error);
@@ -27,7 +29,7 @@ export async function connectToMongoDB() {
   }
 }
 
-export async function disconnectMongoDB() {
-  await client.close();
-  console.log('Connection closed!');
+export async function getCollection() {
+  const db = await connect();
+  return db.collection('users');
 }
