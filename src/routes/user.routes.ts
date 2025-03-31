@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
 
 import { UserController } from '@controllers/user.controller';
 import { userSchema } from '@helpers/userSchema';
@@ -12,12 +12,12 @@ const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
 const userController = new UserController(userService);
 
-routes.get('/', async (req: Request, res: Response) =>
-  userController.list(req, res),
-);
+routes.get('/:id?', async (req, res) => userController.list(req, res));
 
 routes.post('/', validateRequestBody(userSchema), async (req, res) =>
   userController.create(req, res),
 );
+
+routes.delete('/:id', async (req, res) => userController.delete(req, res));
 
 export { routes as userRoutes };
