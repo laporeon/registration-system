@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb';
 
 import { getCollection } from '@database/mongo';
+import { NotFoundError } from '@errors/index';
 import { User } from '@interfaces/User';
 
 export class UserRepository {
@@ -24,11 +25,17 @@ export class UserRepository {
       })
       .toArray();
 
+    if (data.length <= 0) throw new NotFoundError();
+
     return data;
   }
 
   async delete(id: string) {
     const collection = await getCollection();
+
+    const user = await collection.findOne({ _id: new ObjectId(id) });
+
+    if (!user) throw new NotFoundError();
 
     await collection.deleteOne({ _id: new ObjectId(id) });
   }
