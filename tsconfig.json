@@ -24,7 +24,8 @@
       "@services/*": ["./src/services/*"],
       "@repositories/*": ["./src/repositories/*"],
       "@routes/*": ["./src/routes/*"],
-      "@middlewares/*": ["./src/middlewares/*"]
+      "@middlewares/*": ["./src/middlewares/*"],
+      "@errors/*": ["./src/errors/*"]
     }
   },
   "include": ["./src/**/*"],
