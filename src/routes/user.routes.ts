@@ -12,16 +12,12 @@ const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
 const userController = new UserController(userService);
 
-routes.get('/:id?', (req, res) => {
-  userController.list(req, res);
-});
+routes.get('/:id?', (req, res) => userController.list(req, res));
 
-routes.post('/', validateRequestBody(userSchema), (req, res) => {
-  userController.create(req, res);
-});
+routes.post('/', validateRequestBody(userSchema), (req, res) =>
+  userController.create(req, res),
+);
 
-routes.delete('/:id', (req, res) => {
-  userController.delete(req, res);
-});
+routes.delete('/:id', (req, res) => userController.delete(req, res));
 
 export { routes as userRoutes };
