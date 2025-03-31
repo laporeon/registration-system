@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
+import 'express-async-errors';
 
 import { env } from '@config/env';
+import { errorHandler } from '@middlewares/errorHandler';
 import { userRoutes } from '@routes/user.routes';
 
 const app = express();
@@ -14,6 +16,8 @@ app.use('/users', userRoutes);
 app.get('/', (_: Request, res: Response) => {
   res.json({ message: 'Hello!' });
 });
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server is running at: http://localhost:${PORT}`);
