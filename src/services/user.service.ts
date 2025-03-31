@@ -5,15 +5,15 @@ import { User } from '@interfaces/User';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async create(userData: User) {
+  async create(userData: User): Promise<Response> {
     return await this.userRepository.create(userData);
   }
 
-  async list(id?: string) {
+  async list(id?: string): Promise<Response> {
     return await this.userRepository.list(id);
   }
 
-  async delete(id: string) {
-    return await this.userRepository.delete(id);
+  async delete(id: string): Promise<void> {
+    await this.userRepository.delete(id);
   }
 }
