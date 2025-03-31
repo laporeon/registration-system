@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb';
+
 import { getCollection } from '@database/mongo';
 import { User } from '@interfaces/User';
 
@@ -13,11 +15,21 @@ export class UserRepository {
     return user;
   }
 
-  async list() {
+  async list(id?: string) {
     const collection = await getCollection();
 
-    const users = await collection.find().toArray();
+    const data = await collection
+      .find({
+        ...(id && { _id: new ObjectId(id) }),
+      })
+      .toArray();
 
-    return users;
+    return data;
+  }
+
+  async delete(id: string) {
+    const collection = await getCollection();
+
+    await collection.deleteOne({ _id: new ObjectId(id) });
   }
 }
