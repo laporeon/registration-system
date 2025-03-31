@@ -9,7 +9,11 @@ export class UserService {
     return await this.userRepository.create(userData);
   }
 
-  async list() {
-    return await this.userRepository.list();
+  async list(id?: string) {
+    return await this.userRepository.list(id);
+  }
+
+  async delete(id: string) {
+    return await this.userRepository.delete(id);
   }
 }
