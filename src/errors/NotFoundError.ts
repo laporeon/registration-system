@@ -1,4 +1,4 @@
-import { HTTPStatus } from '@helpers/httpStatus';
+import { HTTPStatus } from '@helpers/index';
 
 import { AppError } from './AppError';
 

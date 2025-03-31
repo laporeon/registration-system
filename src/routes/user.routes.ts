@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { UserController } from '@controllers/user.controller';
-import { userSchema } from '@helpers/userSchema';
+import { userSchema } from '@helpers/index';
 import { validateRequestBody } from '@middlewares/index';
 import { UserRepository } from '@repositories/user.repository';
 import { UserService } from '@services/user.service';
