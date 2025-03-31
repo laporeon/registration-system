@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import 'express-async-errors';
 
 import { env } from '@config/env';
+import { logger } from '@helpers/index';
 import { errorHandler } from '@middlewares/index';
 import { userRoutes } from '@routes/user.routes';
 
@@ -20,5 +21,5 @@ app.get('/', (_: Request, res: Response) => {
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Server is running at: http://localhost:${PORT}`);
+  logger.info(`Server is running at: http://localhost:${PORT}`);
 });

@@ -1,6 +1,8 @@
 import { RequestHandler } from 'express';
 import { ZodTypeAny, z } from 'zod';
 
+import { logger } from '@helpers/index';
+
 const validate = (
   schema: ZodTypeAny,
   source: 'body' | 'params' | 'query',
@@ -11,6 +13,14 @@ const validate = (
       next();
     } catch (err) {
       if (err instanceof z.ZodError) {
+        logger.error({
+          errors: err.errors.map(error => {
+            return {
+              message: error.message,
+              path: error.path,
+            };
+          }),
+        });
         res.status(400).json({
           message: `Invalid ${source} schema`,
           errors: err.errors,

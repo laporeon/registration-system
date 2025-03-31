@@ -1,6 +1,7 @@
 import { Db, MongoClient, ServerApiVersion } from 'mongodb';
 
 import { env } from '@config/env';
+import { logger } from '@helpers/index';
 
 let database: Db | null = null;
 
@@ -21,10 +22,10 @@ export async function connect(): Promise<Db> {
   try {
     await client.connect();
     database = client.db('wiredcraft');
-    console.log('Successfully connected to MongoDB!');
+    logger.info('Successfully connected to MongoDB!');
     return database;
   } catch (error) {
-    console.error('Failed to connect with database:', error);
+    logger.error('Failed to connect with database:', error);
     throw new Error(`Database connection failed: ${error}`);
   }
 }

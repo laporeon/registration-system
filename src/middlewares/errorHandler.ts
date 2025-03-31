@@ -1,6 +1,7 @@
 import { NextFunction, Response, Request } from 'express';
 
 import { AppError } from '@errors/AppError';
+import { logger } from '@helpers/index';
 
 export const errorHandler = (
   err: Error,
@@ -9,6 +10,7 @@ export const errorHandler = (
   __: NextFunction,
 ) => {
   if (err instanceof AppError) {
+    logger.error(err);
     response.status(err.statusCode).json({
       error: err.name,
       message: err.message,
