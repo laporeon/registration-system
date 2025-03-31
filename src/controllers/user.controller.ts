@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+import { HTTPStatus } from '@helpers/httpStatus';
 import { UserService } from '@services/user.service';
 
 export class UserController {
@@ -8,20 +9,23 @@ export class UserController {
   async create(request: Request, response: Response): Promise<any> {
     try {
       const user = await this.userService.create(request.body);
-      return response.status(201).json(user);
+      return response.status(HTTPStatus.CREATED).json(user);
     } catch (error) {
-      console.log(error);
-      return response.status(500).json({ error: 'Internal Server Error.' });
+      return response.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(error);
     }
   }
 
-  async list(_: Request, response: Response): Promise<any> {
+  async list(request: Request, response: Response): Promise<any> {
     try {
-      const users = await this.userService.list();
-      return response.status(200).json({ users });
+      const users = await this.userService.list(request.params?.id);
+      return response.status(HTTPStatus.OK).json(users);
     } catch (error) {
-      console.log(error);
-      return response.status(500).json(error);
+      return response.status(HTTPStatus.INTERNAL_SERVER_ERROR).json(error);
     }
+  }
+
+  async delete(request: Request, response: Response): Promise<any> {
+    await this.userService.delete(request.params.id);
+    return response.status(HTTPStatus.NO_CONTENT).json();
   }
 }
