@@ -1,4 +1,4 @@
-import { Address } from './Address';
+import { Address } from '@/interfaces';
 
 export class User {
   name: string;

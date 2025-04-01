@@ -1,6 +1,5 @@
-import { UserRepository } from 'src/repositories/user.repository';
-
-import { User } from '@interfaces/User';
+import { User } from '@/interfaces';
+import { UserRepository } from '@/repositories/user.repository';
 
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}

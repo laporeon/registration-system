@@ -1,7 +1,7 @@
 import { Db, MongoClient, ServerApiVersion } from 'mongodb';
 
-import { env } from '@config/env';
-import { logger } from '@helpers/index';
+import { env } from '@/config/env';
+import { logger } from '@/helpers';
 
 let database: Db | null = null;
 

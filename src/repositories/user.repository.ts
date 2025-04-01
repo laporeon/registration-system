@@ -1,8 +1,8 @@
 import { ObjectId } from 'mongodb';
 
-import { getCollection } from '@database/mongo';
-import { InvalidRequiredField, NotFoundError } from '@errors/index';
-import { User } from '@interfaces/User';
+import { getCollection } from '@/database/mongo';
+import { InvalidRequiredField, NotFoundError } from '@/errors';
+import { User } from '@/interfaces';
 
 export class UserRepository {
   async create(userData: User): Promise<any> {
@@ -18,6 +18,8 @@ export class UserRepository {
 
   async list(id?: string): Promise<any> {
     const collection = await getCollection();
+
+    if (id && !ObjectId.isValid(id)) throw new InvalidRequiredField();
 
     const data = await collection
       .find({

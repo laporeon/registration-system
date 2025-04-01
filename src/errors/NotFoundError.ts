@@ -1,6 +1,5 @@
-import { HTTPStatus } from '@helpers/index';
-
-import { AppError } from './AppError';
+import { AppError } from '@/errors';
+import { HTTPStatus } from '@/helpers';
 
 export class NotFoundError extends AppError {
   constructor() {

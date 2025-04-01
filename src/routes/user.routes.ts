@@ -1,10 +1,10 @@
 import { Router } from 'express';
 
-import { UserController } from '@controllers/user.controller';
-import { userSchema } from '@helpers/index';
-import { validateRequestBody } from '@middlewares/index';
-import { UserRepository } from '@repositories/user.repository';
-import { UserService } from '@services/user.service';
+import { UserController } from '@/controllers/user.controller';
+import { userSchema } from '@/helpers';
+import { validateRequestBody } from '@/middlewares';
+import { UserRepository } from '@/repositories/user.repository';
+import { UserService } from '@/services/user.service';
 
 const routes = Router();
 

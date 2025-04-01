@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import { ZodTypeAny, z } from 'zod';
 
-import { logger } from '@helpers/index';
+import { logger } from '@/helpers';
 
 const validate = (
   schema: ZodTypeAny,

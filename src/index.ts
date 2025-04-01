@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
 import 'express-async-errors';
 
-import { env } from '@config/env';
-import { logger } from '@helpers/index';
-import { errorHandler } from '@middlewares/index';
-import { userRoutes } from '@routes/user.routes';
+import { env } from '@/config/env';
+import { logger } from '@/helpers';
+import { errorHandler } from '@/middlewares';
+import { userRoutes } from '@/routes/user.routes';
 
 const app = express();
 

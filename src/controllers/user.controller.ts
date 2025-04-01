@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-import { HTTPStatus } from '@helpers/httpStatus';
-import { UserService } from '@services/user.service';
+import { HTTPStatus } from '@/helpers';
+import { UserService } from '@/services/user.service';
 
 export class UserController {
   constructor(private readonly userService: UserService) {}

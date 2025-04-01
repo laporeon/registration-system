@@ -1,6 +1,5 @@
-import { HTTPStatus } from '@helpers/httpStatus';
-
-import { AppError } from './AppError';
+import { AppError } from '@/errors';
+import { HTTPStatus } from '@/helpers';
 
 export class InvalidRequiredField extends AppError {
   constructor() {
