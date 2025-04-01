@@ -1,7 +1,7 @@
-import { errorSchema, userRequestBody, userResponseSchema } from './schemas/';
+import { errorSchema, userRequestBody, userSchema } from './schemas/';
 
 export default {
   error: errorSchema,
-  user: userResponseSchema,
+  user: userSchema,
   userRequestBody: userRequestBody,
 };

@@ -1,4 +1,4 @@
-export const userResponseSchema = {
+export const userSchema = {
   type: 'object',
   properties: {
     id: { type: 'string' },
