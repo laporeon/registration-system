@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "./src",
+    "rootDirs": ["./src", "./docs/"],
     "target": "ES2022",
     "sourceMap": true,
     "skipLibCheck": true,
@@ -19,6 +19,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "docs/**/*"],
   "exclude": ["node_modules/**/*", "dist"]
 }
