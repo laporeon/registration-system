@@ -16,16 +16,7 @@
     "experimentalDecorators": true,
     "noUnusedLocals": true,
     "paths": {
-      "@controllers/*": ["./src/controllers/*"],
-      "@helpers/*": ["./src/helpers/*"],
-      "@interfaces/*": ["./src/interfaces/*"],
-      "@config/*": ["./src/config/*"],
-      "@database/*": ["./src/database/*"],
-      "@services/*": ["./src/services/*"],
-      "@repositories/*": ["./src/repositories/*"],
-      "@routes/*": ["./src/routes/*"],
-      "@middlewares/*": ["./src/middlewares/*"],
-      "@errors/*": ["./src/errors/*"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["./src/**/*"],
