@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb';
 
 import { faker } from '@faker-js/faker';
 
-import { getCollection } from './mongo';
+import { connect, disconnect } from './mongo';
 
 function createRandomUser() {
   return {
@@ -25,14 +25,15 @@ const users = faker.helpers.multiple(createRandomUser, {
   count: 5,
 });
 
-async function seedDatabase() {
+const seedDatabase = async () => {
   try {
-    const collection = await getCollection();
+    const { collection } = await connect();
     await collection.insertMany(users);
-    console.log(`Database populated!`);
+    console.log('✅ Database seeded successfully!');
+    await disconnect();
   } catch (error) {
-    console.log(`There was an error while trying to seed dabatase: `, error);
+    console.error('❌ Failed to seed database:', error);
   }
-}
+};
 
 seedDatabase();
