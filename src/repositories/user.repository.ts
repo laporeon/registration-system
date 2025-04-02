@@ -1,12 +1,12 @@
 import { ObjectId } from 'mongodb';
 
-import { getCollection } from '@/database/mongo';
+import { connect } from '@/database/mongo';
 import { InvalidRequiredField, NotFoundError } from '@/errors';
 import { User } from '@/interfaces';
 
 export class UserRepository {
   async create(userData: User): Promise<any> {
-    const collection = await getCollection();
+    const { collection } = await connect();
 
     const user = await collection.insertOne({
       ...userData,
@@ -17,7 +17,7 @@ export class UserRepository {
   }
 
   async list(id?: string): Promise<any> {
-    const collection = await getCollection();
+    const { collection } = await connect();
 
     if (id && !ObjectId.isValid(id)) throw new InvalidRequiredField();
 
@@ -33,7 +33,7 @@ export class UserRepository {
   }
 
   async delete(id: string): Promise<void> {
-    const collection = await getCollection();
+    const { collection } = await connect();
 
     if (!ObjectId.isValid(id)) throw new InvalidRequiredField();
 
