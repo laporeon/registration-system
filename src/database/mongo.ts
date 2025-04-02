@@ -1,36 +1,31 @@
-import { Db, MongoClient, ServerApiVersion } from 'mongodb';
+import { Collection, Db, MongoClient } from 'mongodb';
 
 import { env } from '@/config/env';
 import { logger } from '@/helpers';
 
-let database: Db | null = null;
+const mongoUri = `mongodb://${env.username}:${env.password}@${env.host}:27017/${env.database}?authSource=admin`;
 
-const client: MongoClient = new MongoClient(env.databaseUrl, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-  maxPoolSize: 20,
-  minPoolSize: 5,
-  connectTimeoutMS: 10000,
+const client = new MongoClient(mongoUri, {
+  timeoutMS: 5000,
 });
 
-export async function connect(): Promise<Db> {
-  if (database) return database;
-
+async function connect(): Promise<any> {
   try {
     await client.connect();
-    database = client.db('wiredcraft');
-    logger.info('Successfully connected to MongoDB!');
-    return database;
+    const database: Db = client.db(env.database);
+    const collection: Collection = await database.collection('users');
+    logger.info('Connected to dabatase.');
+    return { database, collection };
   } catch (error) {
-    logger.error('Failed to connect with database:', error);
-    throw new Error(`Database connection failed: ${error}`);
+    console.log({ error });
+    logger.error(`Database connection failed.`, error);
+    throw new Error('Failed to connect to database.');
   }
 }
 
-export async function getCollection() {
-  const db = await connect();
-  return db.collection('users');
+async function disconnect() {
+  await client.close();
+  logger.info('Connection with database closed!');
 }
+
+export { connect, disconnect };
