@@ -1,14 +1,14 @@
 import express from 'express';
 import 'express-async-errors';
+import 'dotenv/config';
 
-import { env } from '@/config/env';
 import { logger } from '@/helpers';
 import { errorHandler } from '@/middlewares';
 import { userRoutes, swaggerRoutes } from '@/routes';
 
 const app = express();
 
-const PORT = env.port || 3000;
+const PORT = process.env.PORT;
 
 app.use(express.json());
 
