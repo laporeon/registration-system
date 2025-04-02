@@ -1,0 +1,38 @@
+import { ObjectId } from 'mongodb';
+
+import { faker } from '@faker-js/faker';
+
+import { getCollection } from './mongo';
+
+function createRandomUser() {
+  return {
+    _id: new ObjectId(),
+    name: faker.person.fullName(),
+    email: faker.internet.email(),
+    dob: faker.date.birthdate().toISOString().substring(0, 10),
+    address: {
+      street: faker.location.street(),
+      number: faker.number.int({ min: 1, max: 9999 }),
+      zipCode: faker.location.zipCode(),
+      city: faker.location.city(),
+    },
+    description: faker.person.bio(),
+    createdAt: faker.date.past(),
+  };
+}
+
+const users = faker.helpers.multiple(createRandomUser, {
+  count: 5,
+});
+
+async function seedDatabase() {
+  try {
+    const collection = await getCollection();
+    await collection.insertMany(users);
+    console.log(`Database populated!`);
+  } catch (error) {
+    console.log(`There was an error while trying to seed dabatase: `, error);
+  }
+}
+
+seedDatabase();
