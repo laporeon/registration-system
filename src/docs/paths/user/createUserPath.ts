@@ -39,6 +39,9 @@ export const createUserPath = {
       400: {
         $ref: '#/components/badRequestError',
       },
+      409: {
+        $ref: '#/components/alreadyRegisteredError',
+      },
       500: {
         $ref: '#/components/internalServerError',
       },

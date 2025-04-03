@@ -1,4 +1,5 @@
 import {
+  alreadyRegisteredError,
   badRequestError,
   internalServerError,
   invalidRequiredFieldError,
@@ -10,4 +11,5 @@ export default {
   internalServerError,
   notFoundError,
   invalidRequiredFieldError,
+  alreadyRegisteredError,
 };
