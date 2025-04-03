@@ -10,13 +10,15 @@ import { logger } from '@/helpers';
 import { User } from '@/interfaces';
 
 export class UserRepository {
+  private readonly collectionName = 'users';
+
   async create(user: User): Promise<any> {
-    const { collection } = await connect();
+    const db = await connect();
 
     if (await this.isEmailAlreadyRegistered(user.email))
       throw new AlreadyRegisteredError();
 
-    const { insertedId } = await collection.insertOne({
+    const { insertedId } = await db.collection(this.collectionName).insertOne({
       ...user,
       createdAt: new Date(),
     });
@@ -31,11 +33,12 @@ export class UserRepository {
   }
 
   async list(id?: string): Promise<any> {
-    const { collection } = await connect();
+    const db = await connect();
 
     if (id && !ObjectId.isValid(id)) throw new InvalidRequiredField();
 
-    const data = await collection
+    const data = await db
+      .collection(this.collectionName)
       .find({
         ...(id && { _id: new ObjectId(id) }),
       })
@@ -47,11 +50,11 @@ export class UserRepository {
   }
 
   async update(id: string, fieldsToUpdate: Partial<User>): Promise<any> {
-    const { collection } = await connect();
+    const db = await connect();
 
     if (!ObjectId.isValid(id)) throw new InvalidRequiredField();
 
-    const user = await collection.findOneAndUpdate(
+    const user = await db.collection(this.collectionName).findOneAndUpdate(
       {
         _id: new ObjectId(id),
       },
@@ -67,23 +70,27 @@ export class UserRepository {
   }
 
   async delete(id: string): Promise<void> {
-    const { collection } = await connect();
+    const db = await connect();
 
     if (!ObjectId.isValid(id)) throw new InvalidRequiredField();
 
-    const user = await collection.findOne({ _id: new ObjectId(id) });
+    const user = await db
+      .collection(this.collectionName)
+      .findOne({ _id: new ObjectId(id) });
 
     if (!user) throw new NotFoundError();
 
     logger.info(`User successfully deleted.`);
 
-    await collection.deleteOne({ _id: new ObjectId(id) });
+    await db
+      .collection(this.collectionName)
+      .deleteOne({ _id: new ObjectId(id) });
   }
 
   async isEmailAlreadyRegistered(email: string) {
-    const { collection } = await connect();
+    const db = await connect();
 
-    return await collection.findOne({
+    return await db.collection(this.collectionName).findOne({
       email,
     });
   }
