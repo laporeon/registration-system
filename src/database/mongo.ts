@@ -9,6 +9,7 @@ const client = new MongoClient(mongoUri, {
   timeoutMS: 5000,
 });
 
+// TODO: refactor connection
 async function connect(): Promise<any> {
   try {
     await client.connect();
