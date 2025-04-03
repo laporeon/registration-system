@@ -1,19 +1,31 @@
-export const listUsersPath = {
-  get: {
+export const updateUserPath = {
+  put: {
     tags: ['User'],
-    summary: 'Retrieve all users or retrieve user by id.',
+    summary: 'Update user information.',
     description: '',
+    requestBody: {
+      required: true,
+      content: {
+        'application/json': {
+          schema: {
+            $ref: '#/schemas/updateUserRequestBody',
+            example: {
+              email: 'newemail@gmail.com',
+            },
+          },
+        },
+      },
+    },
     parameters: [
       {
         name: 'id',
         in: 'path',
         description: 'user id',
-        required: false,
+        required: true,
         schema: {
           type: 'string',
           format: 'ObjectId',
         },
-        allowEmptyValue: true,
       },
     ],
     responses: {
@@ -28,7 +40,11 @@ export const listUsersPath = {
         },
       },
       400: {
-        $ref: '#/components/invalidRequiredFieldError',
+        description: 'Bad Request',
+        oneOf: [
+          { $ref: '#/components/badRequestError' },
+          { $ref: '#/components/invalidRequiredFieldError' },
+        ],
       },
       404: {
         $ref: '#/components/notFoundError',

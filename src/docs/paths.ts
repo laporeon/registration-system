@@ -1,6 +1,15 @@
-import { createUserPath, listUsersPath, deleteUsersPath } from './paths/';
+import {
+  createUserPath,
+  listUsersPath,
+  deleteUsersPath,
+  updateUserPath,
+} from './paths/';
 
 export default {
   '/users': { ...createUserPath },
-  '/users/{userId}': { ...listUsersPath, ...deleteUsersPath },
+  '/users/{id}': {
+    ...listUsersPath,
+    ...updateUserPath,
+    ...deleteUsersPath,
+  },
 };

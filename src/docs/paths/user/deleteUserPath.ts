@@ -5,7 +5,7 @@ export const deleteUsersPath = {
     description: '',
     parameters: [
       {
-        name: 'userId',
+        name: 'id',
         in: 'path',
         description: 'user id',
         required: true,
