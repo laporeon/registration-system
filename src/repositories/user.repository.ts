@@ -1,22 +1,32 @@
 import { ObjectId } from 'mongodb';
 
 import { connect } from '@/database/mongo';
-import { InvalidRequiredField, NotFoundError } from '@/errors';
+import {
+  AlreadyRegisteredError,
+  InvalidRequiredField,
+  NotFoundError,
+} from '@/errors';
+import { logger } from '@/helpers';
 import { User } from '@/interfaces';
 
 export class UserRepository {
-  async create(userData: User): Promise<any> {
+  async create(user: User): Promise<any> {
     const { collection } = await connect();
 
+    if (await this.isEmailAlreadyRegistered(user.email))
+      throw new AlreadyRegisteredError();
+
     const { insertedId } = await collection.insertOne({
-      ...userData,
+      ...user,
       createdAt: new Date(),
     });
 
-    // Since MongoDB itself doesn't return full object inserted data one insertOne, we need to do it manually
+    logger.info(`User successfully inserted at database.`);
+
+    // Since MongoDB itself doesn't return full object inserted data on insertOne, we need to return it manually
     return {
       _id: insertedId,
-      ...userData,
+      ...user,
     };
   }
 
@@ -51,6 +61,8 @@ export class UserRepository {
 
     if (!user) throw new NotFoundError();
 
+    logger.info(`User information successfully updated.`);
+
     return user;
   }
 
@@ -63,6 +75,16 @@ export class UserRepository {
 
     if (!user) throw new NotFoundError();
 
+    logger.info(`User successfully deleted.`);
+
     await collection.deleteOne({ _id: new ObjectId(id) });
+  }
+
+  async isEmailAlreadyRegistered(email: string) {
+    const { collection } = await connect();
+
+    return await collection.findOne({
+      email,
+    });
   }
 }
