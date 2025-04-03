@@ -16,6 +16,11 @@ export class UserController {
     return response.status(HTTPStatus.OK).json(users);
   }
 
+  async update(request: Request, response: Response): Promise<any> {
+    const user = await this.userService.update(request.params.id, request.body);
+    return response.status(HTTPStatus.OK).json(user);
+  }
+
   async delete(request: Request, response: Response): Promise<any> {
     await this.userService.delete(request.params.id);
     return response.status(HTTPStatus.NO_CONTENT).json();
