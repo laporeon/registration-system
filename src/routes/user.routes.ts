@@ -18,6 +18,10 @@ routes.post('/', validateRequestBody(userSchema), (req, res) =>
   userController.create(req, res),
 );
 
+routes.put('/:id', validateRequestBody(userSchema.partial()), (req, res) =>
+  userController.update(req, res),
+);
+
 routes.delete('/:id', (req, res) => userController.delete(req, res));
 
 export { routes as userRoutes };
