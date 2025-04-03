@@ -4,6 +4,8 @@ import { faker } from '@faker-js/faker';
 
 import { connect, disconnect } from './mongo';
 
+const collectionName = 'users';
+
 function createRandomUser() {
   return {
     _id: new ObjectId(),
@@ -27,12 +29,12 @@ const users = faker.helpers.multiple(createRandomUser, {
 
 const seedDatabase = async () => {
   try {
-    const { collection } = await connect();
-    await collection.insertMany(users);
-    console.log('✅ Database seeded successfully!');
+    const db = await connect();
+    await db.collection(collectionName).insertMany(users);
+    console.log('✅ Database successfully populated!');
     await disconnect();
   } catch (error) {
-    console.error('❌ Failed to seed database:', error);
+    console.error('❌ Failed to populate database:', error);
   }
 };
 
