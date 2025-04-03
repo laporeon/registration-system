@@ -6,7 +6,6 @@ import {
   InvalidRequiredField,
   NotFoundError,
 } from '@/errors';
-import { logger } from '@/helpers';
 import { User } from '@/interfaces';
 
 export class UserRepository {
@@ -22,8 +21,6 @@ export class UserRepository {
       ...user,
       createdAt: new Date(),
     });
-
-    logger.info(`User successfully inserted at database.`);
 
     // Since MongoDB itself doesn't return full object inserted data on insertOne, we need to return it manually
     return {
@@ -64,8 +61,6 @@ export class UserRepository {
 
     if (!user) throw new NotFoundError();
 
-    logger.info(`User information successfully updated.`);
-
     return user;
   }
 
@@ -79,8 +74,6 @@ export class UserRepository {
       .findOne({ _id: new ObjectId(id) });
 
     if (!user) throw new NotFoundError();
-
-    logger.info(`User successfully deleted.`);
 
     await db
       .collection(this.collectionName)
