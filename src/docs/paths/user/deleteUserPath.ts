@@ -20,7 +20,7 @@ export const deleteUsersPath = {
         description: 'No Content',
       },
       400: {
-        $ref: '#/components/invalidRequiredFieldError',
+        $ref: '#/components/invalidParamsError',
       },
       404: {
         $ref: '#/components/notFoundError',

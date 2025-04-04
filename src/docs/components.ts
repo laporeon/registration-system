@@ -2,7 +2,7 @@ import {
   alreadyRegisteredError,
   badRequestError,
   internalServerError,
-  invalidRequiredFieldError,
+  invalidParamsError,
   notFoundError,
 } from './components/';
 
@@ -10,6 +10,6 @@ export default {
   badRequestError,
   internalServerError,
   notFoundError,
-  invalidRequiredFieldError,
+  invalidParamsError,
   alreadyRegisteredError,
 };

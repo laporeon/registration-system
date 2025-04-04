@@ -43,7 +43,7 @@ export const updateUserPath = {
         description: 'Bad Request',
         oneOf: [
           { $ref: '#/components/badRequestError' },
-          { $ref: '#/components/invalidRequiredFieldError' },
+          { $ref: '#/components/invalidParamsError' },
         ],
       },
       404: {
