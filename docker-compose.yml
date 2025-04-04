@@ -15,7 +15,7 @@ services:
     depends_on:
       - mongodb
     ports:
-      - 3000:3000
+      - 3333:3333
     networks:
       - mongo-compose-network
 
