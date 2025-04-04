@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import { ZodTypeAny, z } from 'zod';
 
-import { logger } from '@/helpers';
+import { HTTPStatus, logger } from '@/helpers';
 
 const validate = (
   schema: ZodTypeAny,
@@ -20,7 +20,7 @@ const validate = (
             };
           }),
         });
-        res.status(400).json({
+        res.status(HTTPStatus.BAD_REQUEST).json({
           message: `Invalid ${source} schema`,
           errors: err.errors.map(error => {
             return {
