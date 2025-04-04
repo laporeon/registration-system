@@ -10,8 +10,9 @@
     "start": "node ./dist/index.js",
     "start:dev": "tsx watch src/index.ts",
     "db:seed": "tsx src/database/seed.ts",
-    "docker:up": "docker compose up -d",
-    "docker:down": "docker compose down"
+    "docker:up": "docker compose down && docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:rebuild": "docker compose down && docker compose up --build -d"
   },
   "keywords": [],
   "author": "",
