@@ -16,16 +16,6 @@ const userSchema = z.object({
   description: z.string().optional(),
 });
 
-const querySchema = z.object({
-  limit: z
-    .string()
-    .transform(val => Number(val))
-    .refine(val => val >= 1, {
-      message: 'Limit must be at least 1',
-    })
-    .optional(),
-});
-
 const paramsSchema = z.object({
   id: z
     .string()
@@ -35,4 +25,4 @@ const paramsSchema = z.object({
     .optional(),
 });
 
-export { userSchema, querySchema, paramsSchema };
+export { userSchema, paramsSchema };
