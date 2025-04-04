@@ -13,7 +13,7 @@ const PORT = process.env.PORT;
 app.use(express.json());
 
 app.use('/users', userRoutes);
-app.use('/api/docs', swaggerRoutes);
+app.use('/docs', swaggerRoutes);
 
 app.use(errorHandler);
 
