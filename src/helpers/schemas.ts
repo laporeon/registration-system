@@ -1,6 +1,7 @@
+import { ObjectId } from 'mongodb';
 import { z } from 'zod';
 
-export const userSchema = z.object({
+const userSchema = z.object({
   name: z.string().min(3, { message: 'Name must have at least 3 characters' }),
   email: z.string().email(),
   dob: z.string(),
@@ -14,3 +15,24 @@ export const userSchema = z.object({
   }),
   description: z.string().optional(),
 });
+
+const querySchema = z.object({
+  limit: z
+    .string()
+    .transform(val => Number(val))
+    .refine(val => val >= 1, {
+      message: 'Limit must be at least 1',
+    })
+    .optional(),
+});
+
+const paramsSchema = z.object({
+  id: z
+    .string()
+    .refine(val => ObjectId.isValid(val), {
+      message: 'Invalid MongoDB ID format',
+    })
+    .optional(),
+});
+
+export { userSchema, querySchema, paramsSchema };

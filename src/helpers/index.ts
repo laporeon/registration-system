@@ -1,3 +1,3 @@
 export * from './httpStatus';
-export * from './userSchema';
+export * from './schemas';
 export * from './logger';

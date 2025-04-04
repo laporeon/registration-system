@@ -17,13 +17,16 @@ const validate = (
           errors: err.errors.map(error => {
             return {
               message: error.message,
-              path: error.path,
             };
           }),
         });
         res.status(400).json({
           message: `Invalid ${source} schema`,
-          errors: err.errors,
+          errors: err.errors.map(error => {
+            return {
+              message: error.message,
+            };
+          }),
         });
       } else {
         next(err);

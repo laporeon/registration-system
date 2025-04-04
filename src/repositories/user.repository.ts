@@ -1,11 +1,7 @@
 import { ObjectId } from 'mongodb';
 
 import { connect } from '@/database/mongo';
-import {
-  AlreadyRegisteredError,
-  InvalidRequiredField,
-  NotFoundError,
-} from '@/errors';
+import { AlreadyRegisteredError, NotFoundError } from '@/errors';
 import { User } from '@/interfaces';
 
 export class UserRepository {
@@ -32,8 +28,6 @@ export class UserRepository {
   async list(id?: string): Promise<any> {
     const db = await connect();
 
-    if (id && !ObjectId.isValid(id)) throw new InvalidRequiredField();
-
     const data = await db
       .collection(this.collectionName)
       .find({
@@ -48,8 +42,6 @@ export class UserRepository {
 
   async update(id: string, fieldsToUpdate: Partial<User>): Promise<any> {
     const db = await connect();
-
-    if (!ObjectId.isValid(id)) throw new InvalidRequiredField();
 
     const user = await db.collection(this.collectionName).findOneAndUpdate(
       {
@@ -66,8 +58,6 @@ export class UserRepository {
 
   async delete(id: string): Promise<void> {
     const db = await connect();
-
-    if (!ObjectId.isValid(id)) throw new InvalidRequiredField();
 
     const user = await db
       .collection(this.collectionName)
