@@ -1,5 +1,5 @@
 import prettier from 'eslint-plugin-prettier';
-import importHelpers from 'eslint-plugin-import-helpers';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import prettierConfig from 'eslint-config-prettier';
 import typescriptParser from '@typescript-eslint/parser';
 
@@ -16,29 +16,26 @@ export default [
     },
     plugins: {
       prettier,
-      'import-helpers': importHelpers,
+      'simple-import-sort': simpleImportSort,
     },
     rules: {
       ...prettierConfig.rules,
       'prettier/prettier': 'error',
-      'import-helpers/order-imports': [
-        'warn',
+      'simple-import-sort/imports': [
+        'error',
         {
-          newlinesBetween: 'always',
           groups: [
-            '/^node:/',
-            'module',
-            '/^@/',
-            ['parent', 'sibling', 'index'],
+            ['^\\u0000'],
+            ['^node:'],
+            ['^@?\\w'],
+            ['^@/'],
+            ['^\\.\\.'],
+            ['^\\.'],
           ],
-          alphabetize: {
-            order: 'asc',
-            ignoreCase: true,
-          },
         },
       ],
       'no-console': 'off',
     },
-    ignores: ['eslint.config.mjs', 'node_modules'],
+    ignores: ['dist/**', 'eslint.config.mjs', 'node_modules/**'],
   },
 ];
