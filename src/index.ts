@@ -1,11 +1,12 @@
-import express from 'express';
 import 'express-async-errors';
 import 'dotenv/config';
+
+import express from 'express';
 
 import { env } from '@/config/env';
 import { logger } from '@/helpers';
 import { errorHandler } from '@/middlewares';
-import { userRoutes, swaggerRoutes } from '@/routes';
+import { swaggerRoutes, userRoutes } from '@/routes';
 
 const app = express();
 

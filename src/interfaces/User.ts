@@ -14,7 +14,7 @@ export class User {
     dob: Date,
     address: Address,
     description: string,
-    createdAt: Date,
+    createdAt: Date
   ) {
     this.name = name;
     this.email = email;

@@ -1,4 +1,4 @@
-import { NextFunction, Response, Request } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import { AppError } from '@/errors';
 import { logger } from '@/helpers';
@@ -7,7 +7,7 @@ export const errorHandler = (
   err: Error,
   _: Request,
   response: Response,
-  __: NextFunction,
+  __: NextFunction
 ) => {
   if (err instanceof AppError) {
     logger.error(err);

@@ -1,6 +1,5 @@
-import { ObjectId } from 'mongodb';
-
 import { faker } from '@faker-js/faker';
+import { ObjectId } from 'mongodb';
 
 import { connect, disconnect } from './mongo';
 

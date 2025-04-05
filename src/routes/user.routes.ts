@@ -13,22 +13,22 @@ const userService = new UserService(userRepository);
 const userController = new UserController(userService);
 
 routes.get('/:id?', validateRequestParams(paramsSchema), (req, res) =>
-  userController.list(req, res),
+  userController.list(req, res)
 );
 
 routes.post('/', validateRequestBody(userSchema), (req, res) =>
-  userController.create(req, res),
+  userController.create(req, res)
 );
 
 routes.put(
   '/:id',
   validateRequestParams(paramsSchema),
   validateRequestBody(userSchema.partial()),
-  (req, res) => userController.update(req, res),
+  (req, res) => userController.update(req, res)
 );
 
 routes.delete('/:id', validateRequestParams(paramsSchema), (req, res) =>
-  userController.delete(req, res),
+  userController.delete(req, res)
 );
 
 export { routes as userRoutes };

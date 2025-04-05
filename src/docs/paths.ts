@@ -1,7 +1,7 @@
 import {
   createUserPath,
-  listUsersPath,
   deleteUsersPath,
+  listUsersPath,
   updateUserPath,
 } from './paths/';
 

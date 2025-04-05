@@ -6,7 +6,7 @@ export class AlreadyRegisteredError extends AppError {
     super(
       HTTPStatus.CONFLICT,
       'Email already registered.',
-      'AlreadyRegisteredError',
+      'AlreadyRegisteredError'
     );
   }
 }

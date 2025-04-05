@@ -1,11 +1,11 @@
 import { RequestHandler } from 'express';
-import { ZodTypeAny, z } from 'zod';
+import { z, ZodTypeAny } from 'zod';
 
 import { HTTPStatus, logger } from '@/helpers';
 
 const validate = (
   schema: ZodTypeAny,
-  source: 'body' | 'params' | 'query',
+  source: 'body' | 'params' | 'query'
 ): RequestHandler => {
   return async (req, res, next) => {
     try {

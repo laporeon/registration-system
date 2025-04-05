@@ -48,7 +48,7 @@ export class UserRepository {
         _id: new ObjectId(id),
       },
       { $set: { ...fieldsToUpdate, updatedAt: new Date() } },
-      { returnDocument: 'after' },
+      { returnDocument: 'after' }
     );
 
     if (!user) throw new NotFoundError();
