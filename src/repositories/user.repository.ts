@@ -1,3 +1,4 @@
+import { hash } from 'bcryptjs';
 import { ObjectId } from 'mongodb';
 
 import { connect } from '@/database/mongo';
@@ -13,15 +14,17 @@ export class UserRepository {
     if (await this.isEmailAlreadyRegistered(user.email))
       throw new AlreadyRegisteredError();
 
+    const hashedPassword = await hash(user.password, 10);
+
     const { insertedId } = await db.collection(this.collectionName).insertOne({
       ...user,
+      password: hashedPassword,
       createdAt: new Date(),
     });
 
-    // Since MongoDB itself doesn't return full object inserted data on insertOne, we need to return it manually
     return {
+      message: 'User successfully created!',
       _id: insertedId,
-      ...user,
     };
   }
 
