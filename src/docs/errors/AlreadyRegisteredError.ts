@@ -1,10 +1,7 @@
-export const alreadyRegisteredError = {
+export const AlreadyRegisteredError = {
   description: 'Conflict',
   content: {
     'application/json': {
-      schema: {
-        $ref: '#/schemas/error',
-      },
       example: {
         error: 'AlreadyRegisteredError',
         message: 'Email already registered.',

@@ -1,11 +1,9 @@
-export const badRequestError = {
+export const BadRequestError = {
   description: 'Bad Request',
   content: {
     'application/json': {
-      schema: {
-        $ref: '#/schemas/error',
-      },
       example: {
+        type: 'object',
         message: 'Invalid body schema',
         errors: [
           {

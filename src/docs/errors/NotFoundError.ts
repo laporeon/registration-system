@@ -1,10 +1,7 @@
-export const notFoundError = {
+export const NotFoundError = {
   description: 'Not Found',
   content: {
     'application/json': {
-      schema: {
-        $ref: '#/schemas/error',
-      },
       example: {
         error: 'NotFoundError',
         message: 'Resource Not Found',

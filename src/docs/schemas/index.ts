@@ -1,4 +1,3 @@
-export * from './errorSchema';
-export * from './userRequestBody';
-export * from './userSchema';
-export * from './updateUserSchema';
+export * from './CreateUserRequestBody';
+export * from './User';
+export * from './UpdateUserRequestBody';
