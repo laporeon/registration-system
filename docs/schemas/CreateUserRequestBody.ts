@@ -26,10 +26,7 @@ export const CreateUserRequestBody = {
         zipCode: { type: 'number', example: '18951' },
       },
     },
-    description: {
-      type: 'string',
-      example: '5feet, blonde, singer, actress.',
-    },
+    description: { type: 'string', example: '5feet, blonde, singer, actress.' },
   },
   required: ['name', 'email', 'password', 'dob', 'address'],
 };

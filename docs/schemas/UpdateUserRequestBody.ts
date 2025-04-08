@@ -13,9 +13,6 @@ export const UpdateUserRequestBody = {
         zipCode: { type: 'number', example: '2050' },
       },
     },
-    description: {
-      type: 'string',
-      example: 'Married, single, brunette, singer, actress.',
-    },
+    description: { type: 'string', example: 'Si, brunette, singer, actress.' },
   },
 };

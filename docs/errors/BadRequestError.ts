@@ -3,7 +3,6 @@ export const BadRequestError = {
   content: {
     'application/json': {
       example: {
-        type: 'object',
         message: 'Invalid body schema',
         errors: [
           {

@@ -4,7 +4,7 @@ import {
   InternalServerError,
   NotFoundError,
 } from '@/docs/errors';
-import { userPaths } from '@/docs/paths';
+import { authPaths, userPaths } from '@/docs/paths';
 import {
   CreateUserRequestBody,
   UpdateUserRequestBody,
@@ -19,6 +19,14 @@ export const swagger = {
     license: { name: 'MIT', url: 'https://spdx.org/licenses/MIT.html' },
   },
   components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        description: 'Enter JWT token in format: Bearer <token>',
+      },
+    },
     schemas: {
       User,
       CreateUserRequestBody,
@@ -29,7 +37,8 @@ export const swagger = {
       NotFoundError,
     },
   },
+  security: [{ bearerAuth: [] }],
   tags: ['User'],
   schemes: ['https', 'http'],
-  paths: userPaths,
+  paths: { ...authPaths, ...userPaths },
 };
