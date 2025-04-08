@@ -6,7 +6,7 @@ import express from 'express';
 import { env } from '@/config/env';
 import { logger } from '@/helpers';
 import { errorHandler } from '@/middlewares';
-import { swaggerRoutes, userRoutes } from '@/routes';
+import { authRoutes, swaggerRoutes, userRoutes } from '@/routes';
 
 const app = express();
 
@@ -16,6 +16,7 @@ app.use(express.json());
 
 app.use('/users', userRoutes);
 app.use('/docs', swaggerRoutes);
+app.use('/auth', authRoutes);
 
 app.use(errorHandler);
 

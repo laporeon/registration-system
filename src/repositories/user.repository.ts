@@ -23,7 +23,7 @@ export class UserRepository {
     });
 
     return {
-      message: 'User successfully created!',
+      message: 'User successfully registered!',
       _id: insertedId,
     };
   }

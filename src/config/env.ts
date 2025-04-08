@@ -6,4 +6,5 @@ export const env = {
   username: process.env.MONGO_USER || 'root',
   password: process.env.MONGO_PASSWORD || 'password',
   database: process.env.MONGO_DB || 'wiredcraft',
+  secret: process.env.JWT_SECRET || 'my-super-secret-here',
 };

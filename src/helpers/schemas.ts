@@ -7,12 +7,9 @@ const userSchema = z.object({
   password: z
     .string()
     .min(8, 'Password must be at least 8 characters long')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/[0-9]/, 'Password must contain at least one number')
     .regex(
-      /[^A-Za-z0-9]/,
-      'Password must contain at least one special character'
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/,
+      'Password must contain at least: 1 uppercase, 1 lowercase, 1 number and 1 special character'
     ),
   dob: z.string(),
   address: z.object({
@@ -35,4 +32,9 @@ const paramsSchema = z.object({
     .optional(),
 });
 
-export { userSchema, paramsSchema };
+const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
+
+export { userSchema, paramsSchema, loginSchema };

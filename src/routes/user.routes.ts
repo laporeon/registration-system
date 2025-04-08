@@ -2,7 +2,11 @@ import { Router } from 'express';
 
 import { UserController } from '@/controllers/user.controller';
 import { paramsSchema, userSchema } from '@/helpers';
-import { validateRequestBody, validateRequestParams } from '@/middlewares';
+import {
+  authenticate,
+  validateRequestBody,
+  validateRequestParams,
+} from '@/middlewares';
 import { UserRepository } from '@/repositories/user.repository';
 import { UserService } from '@/services/user.service';
 
@@ -12,23 +16,26 @@ const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
 const userController = new UserController(userService);
 
-routes.get('/:id?', validateRequestParams(paramsSchema), (req, res) =>
-  userController.list(req, res)
-);
-
-routes.post('/', validateRequestBody(userSchema), (req, res) =>
-  userController.create(req, res)
+routes.get(
+  '/:id?',
+  authenticate,
+  validateRequestParams(paramsSchema),
+  (req, res) => userController.list(req, res)
 );
 
 routes.put(
   '/:id',
+  authenticate,
   validateRequestParams(paramsSchema),
   validateRequestBody(userSchema.partial()),
   (req, res) => userController.update(req, res)
 );
 
-routes.delete('/:id', validateRequestParams(paramsSchema), (req, res) =>
-  userController.delete(req, res)
+routes.delete(
+  '/:id',
+  authenticate,
+  validateRequestParams(paramsSchema),
+  (req, res) => userController.delete(req, res)
 );
 
 export { routes as userRoutes };
