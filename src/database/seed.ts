@@ -10,6 +10,7 @@ function createRandomUser() {
     _id: new ObjectId(),
     name: faker.person.fullName(),
     email: faker.internet.email(),
+    password: faker.internet.password(),
     dob: faker.date.birthdate().toISOString().substring(0, 10),
     address: {
       street: faker.location.street(),
