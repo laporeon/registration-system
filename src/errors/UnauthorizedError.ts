@@ -1,7 +1,7 @@
-import { AppError } from '@/errors';
+import { BaseError } from '@/errors';
 import { HTTPStatus } from '@/helpers';
 
-export class UnauthorizedError extends AppError {
+export class UnauthorizedError extends BaseError {
   constructor() {
     super(
       HTTPStatus.UNAUTHORIZED,

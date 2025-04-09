@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { AppError } from '@/errors';
+import { BaseError } from '@/errors';
 import { logger } from '@/helpers';
 
 export const errorHandler = (
@@ -9,7 +9,7 @@ export const errorHandler = (
   response: Response,
   __: NextFunction
 ) => {
-  if (err instanceof AppError) {
+  if (err instanceof BaseError) {
     logger.error(err);
     response.status(err.statusCode).json({
       error: err.name,

@@ -1,7 +1,7 @@
-import { AppError } from '@/errors';
+import { BaseError } from '@/errors';
 import { HTTPStatus } from '@/helpers';
 
-export class AlreadyRegisteredError extends AppError {
+export class AlreadyRegisteredError extends BaseError {
   constructor() {
     super(
       HTTPStatus.CONFLICT,
