@@ -48,7 +48,7 @@ export const authPaths = {
   '/auth/login': {
     post: {
       tags: ['Auth'],
-      summary: 'Login an user.',
+      summary: 'Login a user.',
       description: '',
       security: [],
       requestBody: {

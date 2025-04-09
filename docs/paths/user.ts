@@ -10,7 +10,7 @@ export const userPaths = {
   '/users/{id}': {
     get: {
       tags: ['User'],
-      summary: 'Retrieve all users or retrieve user by id.',
+      summary: 'Retrieves all users or retrieves user by id.',
       description: '',
       parameters: [
         {
