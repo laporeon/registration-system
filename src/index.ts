@@ -1,5 +1,25 @@
-import { MainMenu } from '@helpers/menu';
+import 'express-async-errors';
+import 'dotenv/config';
 
-const menu = new MainMenu();
+import express from 'express';
 
-menu.display();
+import { env } from '@/config/env';
+import { logger } from '@/helpers';
+import { errorHandler } from '@/middlewares';
+import { authRoutes, swaggerRoutes, userRoutes } from '@/routes';
+
+const app = express();
+
+const PORT = env.port;
+
+app.use(express.json());
+
+app.use('/users', userRoutes);
+app.use('/docs', swaggerRoutes);
+app.use('/auth', authRoutes);
+
+app.use(errorHandler);
+
+app.listen(PORT, () => {
+  logger.info(`Server is running at: http://localhost:${PORT}`);
+});

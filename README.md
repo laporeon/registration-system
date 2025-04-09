@@ -12,29 +12,33 @@
 - [About](#about)
 - [Requirements](#requirements)
 - [Installing](#installing)
+- [Configuring](#configuring)
+  - [.env](#env)
+  - [Docker](#docker)
+  - [MongoDB](#mongodb)
+  - [Seeding Database](#seeding-database)
 - [Usage](#usage)
-- [Preview](#preview)
+  - [Routes](#routes)
+    - [Requests](#requests)
 
 ## About
 
-A challenge adapted from this [post](https://docs.google.com/document/d/1MffuoflNa0xOqfAGNQ-p_iSIy3xbjsb_dpEt8lk_1sc/edit?tab=t.0) I found at Twitter. It consists on a simple registration system via CLI, where you can register a new user based on their answers to predefined questions and then store their data at a custom `.txt` file at `/data/users/` folder already created.
+My solution for the backend challenge found in this [repository](https://github.com/Wiredcraft/test-backend). It's a RESTful API to simulate a user registration system.
 
-**Features and functionalities:**
+**Key features:**
 
-- ZOD to validate answers.
-- Register a new user.
-- List registered users.
-- Register new questions.
-- Delete an existing question.
-- Search user by name.
-- A predefined .txt file with 04 mandatory questions, since they can't be hard coded. All questions, including new ones, must be read by the file and printed at terminal.
-- New questions will be automatically written at the existing file and their ID will be automatically assigned based on the last index.
+- Schema validation using ZOD for request payloads.
+- Full CRUD operations for user accounts.
+- JWT token authentication.
+- Swagger documentation for all endpoints.
+- Database seeding via `seed.ts` script.
 
 ## Requirements:
 
 - [NodeJS](https://nodejs.org/en) v.22 or higher
+- [Docker](https://www.docker.com/)
 
-If you use [NVM](https://github.com/nvm-sh/nvm), just run `nvm use` inside of the root folder.
+If you use [NVM](https://github.com/nvm-sh/nvm), just run `nvm use` in the root folder.
 
 ## **Installing:**
 
@@ -50,16 +54,114 @@ NPM:
 $ npm i
 ```
 
-## Usage
+## **Configuring**
 
-### **Starting**
+### **.env**
+
+Rename the `.env.example` file to `.env` and update the variables with your settings.
+
+| key            | description                         | default    |
+| -------------- | ----------------------------------- | ---------- |
+| PORT           | Port number where the app will run. | `3000`     |
+| MONGO_USER     | MongoDB username                    | root       |
+| MONGO_PASSWORD | MongoDB password                    | password   |
+| MONGO_DB       | MongoDB database name               | wiredcraft |
+| JWT_SECRET     | Random string for JWT token signing | -          |
+|                |
+
+### Docker
+
+For the fastest setup, it is recommended to use [Docker Compose](https://docs.docker.com/compose/):
 
 ```bash
-$ npm start
+# Option 1: Using npm script (recommended)
+$ npm run docker:up
 ```
 
-## Preview
+```bash
+# Option 2: Direct docker compose command
+$ docker compose up -d
+```
 
-![registration-system](https://github.com/user-attachments/assets/6a396c6b-3468-4dc3-a7c7-b85ea94aa697)
+Once started, application will be available at `http://localhost:3333/`.
+
+### MongoDB
+
+If you prefer running MongoDB locally instead of using Docker, ensure [MongoDB](https://www.mongodb.com/) is installed and running on your machine. Then, start the application with:
+
+```bash
+$ npm run start:dev
+```
+
+Once started, application will be available at `http://localhost:3000/`.
+
+### Seeding database
+
+Optionally, you can populate database running the following script:
+
+```bash
+$ npm run db:seed
+```
+
+## Usage
+
+### **Routes**
+
+| Route          | HTTP Method | Params                                                                      | Description                                | Auth Method |
+| -------------- | ----------- | --------------------------------------------------------------------------- | ------------------------------------------ | ----------- |
+| `/auth/signup` | POST        | Body with `name`, `email`, `password`, `dob`, `address` and `description*`. | Register a new user                        | None        |
+| `/auth/login`  | POST        | Body with `email` and `password`.                                           | Login a user                               | None        |
+| `/users/:id`   | GET         | `:id` (optional)                                                            | Retrieves all users or retrieve user by id | Bearer      |
+| `/users/:id`   | PUT         | `:id` + Body with params to be updated.                                     | Update user information                    | Bearer      |
+| `/users/:id`   | DELETE      | `:id`                                                                       | Delete a user                              | Bearer      |
+
+#### Requests
+
+- `POST /auth/signup`
+
+Request body:
+
+```json
+{
+  "name": "Sabrina Carpenter",
+  "email": "sabrinacarpenter@gmail.com",
+  "password": "!P4ssw0rd123",
+  "dob": "1999-05-11",
+  "address": {
+    "street": "Fake Name Street",
+    "number": 10,
+    "city": "Quakertown",
+    "zipCode": 18951
+  },
+  "description": "5'0\", blonde, singer, actress."
+}
+```
+
+- `POST /auth/login`
+
+Request body:
+
+```json
+{
+  "email": "sabrinacarpenter@gmail.com",
+  "password": "!P4ssw0rd123"
+}
+```
+
+- `PUT /users/:id`
+
+Request body:
+
+```json
+{
+  "address": {
+    "street": "New Fake Street",
+    "number": 200,
+    "city": "Las Vegas",
+    "zipCode": 2050
+  },
+  "description": "Single, brunette."
+}
+```
 
 [⬆ Back to the top](#--registration-system)

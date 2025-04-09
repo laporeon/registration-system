@@ -1,67 +1,28 @@
-import fs from 'node:fs/promises';
-import path from 'node:path';
+import { Request, Response } from 'express';
 
-import { folderPath, normalizeName } from '@helpers/constants';
-import { createFileName, getAllFiles } from '@helpers/files';
-import { User } from '@interfaces/User';
+import { HTTPStatus } from '@/helpers';
+import { UserService } from '@/services/user.service';
 
 export class UserController {
-  async createUser({ name, email, age, height, data = [] }: User) {
-    const fileName = await createFileName(name);
+  constructor(private readonly userService: UserService) {}
 
-    const filePath = path.join(folderPath, fileName);
-
-    const fileContent = [name, email, age, height, ...data].join('\n');
-
-    await fs.writeFile(filePath, fileContent);
-
-    console.log('\nUsuário cadastrado com sucesso!');
+  async create(request: Request, response: Response): Promise<any> {
+    const user = await this.userService.create(request.body);
+    return response.status(HTTPStatus.CREATED).json(user);
   }
 
-  async listUsers() {
-    const users = await this.getUsers();
-
-    if (users.length === 0) return console.log('\nNenhum usuário cadastrado.');
-
-    let index = 1;
-
-    console.log('\nUsuários cadastrados: ');
-
-    for (const user of users) {
-      console.log(`${index} - ${user}`);
-      index++;
-    }
+  async list(request: Request, response: Response): Promise<any> {
+    const users = await this.userService.list(request.params?.id);
+    return response.status(HTTPStatus.OK).json(users);
   }
 
-  async getUsers() {
-    const files = await getAllFiles();
-
-    const users = await Promise.all(
-      files.map(async file => {
-        const fileContent = await fs.readFile(file, 'utf-8');
-        const user = fileContent.split('\n')[0];
-        return user;
-      }),
-    );
-
-    return users;
+  async update(request: Request, response: Response): Promise<any> {
+    const user = await this.userService.update(request.params.id, request.body);
+    return response.status(HTTPStatus.OK).json(user);
   }
 
-  async getUserByName(name: string) {
-    const users = await this.getUsers();
-
-    const normalizedName = normalizeName(name);
-
-    const matchedUsers = users.filter(user => user.startsWith(normalizedName));
-
-    if (matchedUsers.length === 0)
-      return console.log(
-        `\nNenhum usuário cadastrado com o nome "${normalizedName}".`,
-      );
-
-    console.log(`\nUsuários encontrados com o nome "${normalizedName}":`);
-    return matchedUsers.forEach(user => {
-      console.log(user);
-    });
+  async delete(request: Request, response: Response): Promise<any> {
+    await this.userService.delete(request.params.id);
+    return response.status(HTTPStatus.NO_CONTENT).json();
   }
 }
