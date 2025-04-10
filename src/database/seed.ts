@@ -3,14 +3,12 @@ import { ObjectId } from 'mongodb';
 
 import { connect, disconnect } from './mongo';
 
-const collectionName = 'users';
-
 function createRandomUser() {
   return {
     _id: new ObjectId(),
     name: faker.person.fullName(),
     email: faker.internet.email(),
-    password: faker.internet.password(),
+    password: faker.internet.password({ length: 8, prefix: 'Aa1!' }),
     dob: faker.date.birthdate().toISOString().substring(0, 10),
     address: {
       street: faker.location.street(),
@@ -23,14 +21,12 @@ function createRandomUser() {
   };
 }
 
-const users = faker.helpers.multiple(createRandomUser, {
-  count: 5,
-});
+const users = faker.helpers.multiple(createRandomUser, { count: 5 });
 
 const seedDatabase = async () => {
   try {
     const db = await connect();
-    await db.collection(collectionName).insertMany(users);
+    await db.collection('users').insertMany(users);
     console.log('✅ Database successfully populated!');
     await disconnect();
   } catch (error) {

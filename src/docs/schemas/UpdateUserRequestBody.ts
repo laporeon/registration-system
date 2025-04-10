@@ -10,7 +10,7 @@ export const UpdateUserRequestBody = {
         street: { type: 'string', example: 'New Fake Name Street' },
         number: { type: 'number', example: 300 },
         city: { type: 'string', example: 'Los Angeles' },
-        zipCode: { type: 'number', example: '2050' },
+        zipCode: { type: 'string', example: '2050' },
       },
     },
     description: { type: 'string', example: 'Si, brunette, singer, actress.' },

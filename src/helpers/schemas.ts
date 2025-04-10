@@ -19,7 +19,7 @@ const userSchema = z.object({
     number: z.number().min(1, { message: 'Street number can not be empty.' }),
     city: z.string().min(4, { message: 'City name can not be empty.' }),
     zipCode: z
-      .number()
+      .string()
       .min(5, { message: 'Zip Code number can not be empty.' }),
   }),
   description: z.string().optional(),

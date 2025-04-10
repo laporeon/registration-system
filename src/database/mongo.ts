@@ -3,9 +3,12 @@ import { Db, MongoClient } from 'mongodb';
 import { env } from '@/config/env';
 import { logger } from '@/helpers';
 
-const mongoUri = `mongodb://${env.username}:${env.password}@${env.host}:27017/${env.database}?authSource=admin`;
-
-const client = new MongoClient(mongoUri, {
+const client = new MongoClient(`mongodb://${env.host}:27017`, {
+  auth: {
+    username: env.username,
+    password: env.password,
+  },
+  authSource: 'admin',
   timeoutMS: 5000,
   connectTimeoutMS: 5000,
 });
@@ -17,7 +20,7 @@ async function connect(): Promise<Db> {
 
   try {
     await client.connect();
-    database = client.db();
+    database = client.db(env.database);
     logger.info('✅️ Succesfully connected to dabatase!');
     return database;
   } catch (error) {

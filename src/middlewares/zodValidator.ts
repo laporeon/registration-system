@@ -13,20 +13,10 @@ const validate = (
       next();
     } catch (err) {
       if (err instanceof z.ZodError) {
-        logger.error({
-          errors: err.errors.map(error => {
-            return {
-              message: error.message,
-            };
-          }),
-        });
+        logger.error({ errors: err.errors });
         res.status(HTTPStatus.BAD_REQUEST).json({
           message: `Invalid ${source} schema`,
-          errors: err.errors.map(error => {
-            return {
-              message: error.message,
-            };
-          }),
+          errors: err.errors,
         });
       } else {
         next(err);

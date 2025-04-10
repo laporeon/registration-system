@@ -23,7 +23,7 @@ export const CreateUserRequestBody = {
         street: { type: 'string', example: 'Fake Name Street' },
         number: { type: 'number', example: 10 },
         city: { type: 'string', example: 'Quakertown' },
-        zipCode: { type: 'number', example: '18951' },
+        zipCode: { type: 'string', example: '18951' },
       },
     },
     description: { type: 'string', example: '5feet, blonde, singer, actress.' },
