@@ -2,10 +2,12 @@ import { ObjectId } from 'mongodb';
 import { z } from 'zod';
 
 const userSchema = z.object({
-  name: z.string().min(3, { message: 'Name must have at least 3 characters' }),
-  email: z.string().email(),
+  name: z
+    .string({ message: 'Name must not be empty.' })
+    .min(3, { message: 'Name must have at least 3 characters' }),
+  email: z.string({ message: 'Email must not be empty.' }).email(),
   password: z
-    .string()
+    .string({ message: 'Password must not be empty.' })
     .min(8, 'Password must be at least 8 characters long')
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/,
@@ -17,7 +19,7 @@ const userSchema = z.object({
     number: z.number().min(1, { message: 'Street number can not be empty.' }),
     city: z.string().min(4, { message: 'City name can not be empty.' }),
     zipCode: z
-      .number()
+      .string()
       .min(5, { message: 'Zip Code number can not be empty.' }),
   }),
   description: z.string().optional(),
