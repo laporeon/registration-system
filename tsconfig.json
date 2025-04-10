@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "rootDirs": ["./src", "./docs"],
+    "rootDirs": ["./src"],
     "target": "ES2022",
     "sourceMap": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node16",
-    "module": "Node16",
+    "moduleResolution": "node",
+    "module": "CommonJS",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "baseUrl": "./",
@@ -16,10 +16,9 @@
     "experimentalDecorators": true,
     "noUnusedLocals": true,
     "paths": {
-      "@/*": ["src/*"],
-      "@/docs/*": ["docs/*"]
+      "@/*": ["src/*"]
     }
   },
-  "include": ["./src/**/*", "docs"],
+  "include": ["./src/**/*"],
   "exclude": ["node_modules/**/*", "dist"]
 }
